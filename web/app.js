@@ -20,7 +20,7 @@ let fonts = [],
   uploaded = [],
   epoch = 0,
   elementIndex = 0;
-let settings = { tracking: 0, leading: 1.15, layout: "horizontal" },
+let settings = { tracking: 0, leading: 1.15, layout: "lines" },
   rounds = [{ id: crypto.randomUUID(), name: "Round 1", marks: [] }],
   roundId = rounds[0].id,
   past = [],
@@ -221,6 +221,11 @@ function activeRound() {
   return rounds.find((r) => r.id === roundId) || rounds.at(-1);
 }
 function syncSettings() {
+  for (const b of document.querySelectorAll("[data-flow]")) {
+    const active = b.dataset.flow === settings.layout;
+    b.classList.toggle("active", active);
+    b.setAttribute("aria-pressed", String(active));
+  }
   for (const k of ["tracking", "leading", "layout"])
     $("#" + k).value = settings[k];
   $("#tracking-value").textContent = settings.tracking;
@@ -605,6 +610,12 @@ for (const id of ["system", "folders-enabled", "google"])
   $("#" + id).onchange = refresh;
 let textTimer;
 $("#words").oninput = () => {
+  if ($("#words").value.includes("\n") && settings.layout !== "horizontal") {
+    settings.layout = "lines";
+    if (selected && !selected.elements && mode === "refine")
+      selected.layout = "lines";
+    syncSettings();
+  }
   if (selected && !selected.elements && mode === "refine")
     selected.text = $("#words").value || "mark this word";
   if (selected?.elements)
@@ -658,7 +669,7 @@ $("#reset").onclick = () => {
   related = null;
   $("#search").value = "";
   $("#seed").value = 9000;
-  settings = { tracking: 0, leading: 1.15, layout: "horizontal" };
+  settings = { tracking: 0, leading: 1.15, layout: "lines" };
   syncSettings();
   document
     .querySelectorAll("[data-category]")
@@ -1198,3 +1209,28 @@ $("#remove-element").onclick = () => {
   updateElements();
   persist();
 };
+
+for (const b of document.querySelectorAll("[data-flow]"))
+  b.onclick = () => {
+    checkpoint();
+    $("#layout").value = b.dataset.flow;
+    $("#layout").oninput();
+  };
+try {
+  const sections = JSON.parse(
+    localStorage.getItem("mark-this-word-sections") || "{}",
+  );
+  for (const section of document.querySelectorAll("[data-section]")) {
+    if (typeof sections[section.dataset.section] === "boolean")
+      section.open = sections[section.dataset.section];
+    section.ontoggle = () => {
+      sections[section.dataset.section] = section.open;
+      try {
+        localStorage.setItem(
+          "mark-this-word-sections",
+          JSON.stringify(sections),
+        );
+      } catch {}
+    };
+  }
+} catch {}

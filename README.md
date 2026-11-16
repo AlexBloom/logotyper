@@ -22,7 +22,7 @@ Open **http://127.0.0.1:9000**. Use `node bin/wordmark.mjs serve --port 9010` fo
 
 ## Browse → collect → refine
 
-1. **Browse:** enter your words, enable system fonts, add multiple local directories, drop font files/folders, or enable the Google Fonts starter catalog. Choose sans, serif, script, other, tags, or family search. Shuffle uses a repeatable seed; Reset restores the initial exploration settings.
+1. **Browse:** enter your words in the left sidebar’s multiline text area. **Use returns** respects Enter/Shift+Enter and blank lines; **One line** flattens the preview while retaining your typed breaks. Sidebar sections collapse and remember their state. Enable system fonts, add multiple local directories, drop font files/folders, or enable the Google Fonts starter catalog. Choose sans, serif, script, other, tags, or family search. Shuffle uses a repeatable seed; Reset restores the initial exploration settings.
 2. **Collect:** save independent snapshots. Freeze a collection into a next round, return to its parent, or generate ten stepped spacing variations of a selected design. The current round responds to global settings; parent rounds stay unchanged.
 3. **Refine:** choose horizontal, stacked, offset, or initials + name layouts. Adjust tracking and line height, mix fonts per word, drag elements, rotate words/letters, outline text, split words into individual letterforms, duplicate/remove elements, and add typed symbols. Undo/redo and project JSON keep versions recoverable.
 4. **Export:** generate outlined SVG, a 2000 × 1300 PNG, and project JSON only when ready. Download SVG or use the Figma clipboard handoff; open it in local Illustrator. Export links clear after an edit so you cannot mistake an older export for the current design.

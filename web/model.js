@@ -1,4 +1,4 @@
-export const layouts = ["horizontal", "stacked", "offset", "initial"];
+export const layouts = ["lines", "horizontal", "stacked", "offset", "initial"];
 export function seeded(items, seed = 9000) {
   const a = [...items].sort((x, y) => x.id.localeCompare(y.id));
   let s = seed >>> 0;
@@ -50,6 +50,57 @@ export function makeDesign(text, fontId, settings = {}) {
 }
 export function plan(design, measure) {
   if (design.elements) return design.elements.map((w) => ({ ...w }));
+  if (design.layout === "lines") {
+    let index = 0;
+    const rows = design.text
+      .replace(/\r\n?/g, "\n")
+      .split("\n")
+      .map((row) =>
+        (row.match(/\S+/g) || []).map((text) => {
+          const o = design.overrides?.[index++] || {},
+            fontId = o.fontId || design.fontId;
+          return {
+            text,
+            fontId,
+            o,
+            width: measure(text, fontId, design.tracking),
+            gap: measure(" ", fontId, 0) + 2 * design.tracking,
+          };
+        }),
+      );
+    const widths = rows.map((row) =>
+      row.reduce(
+        (sum, w, i) => sum + w.width + (i < row.length - 1 ? w.gap : 0),
+        0,
+      ),
+    );
+    const scale = Math.min(
+      1,
+      760 / Math.max(1, ...widths),
+      420 / (Math.max(1, rows.length) * 100 * design.leading),
+    );
+    return rows.flatMap((row, r) => {
+      let cursor = 130;
+      return row.map((w) => {
+        const word = {
+          text: w.text,
+          fontId: w.fontId,
+          x: cursor + (w.o.x || 0),
+          y:
+            330 +
+            (r - (rows.length - 1) / 2) * 100 * design.leading * scale +
+            (w.o.y || 0),
+          size: 100 * scale,
+          rotation: design.rotation + (w.o.rotation || 0),
+          tracking: design.tracking,
+          outline: design.outline,
+          stroke: design.stroke,
+        };
+        cursor += (w.width + w.gap) * scale;
+        return word;
+      });
+    });
+  }
   const tokens = design.text.trim().split(/\s+/),
     horizontal = design.layout === "horizontal";
   const widths = tokens.map((t, i) =>

@@ -107,6 +107,6 @@ A CLI compose request also supplies `sources` so the new process can resolve the
 {"patch":{"layout":"stacked","tracking":1.2,"leading":1.1}}
 ```
 
-Allowed fields: `text,fontId,layout,tracking,leading,rotation,outline,stroke,offset`. Layout is `horizontal`, `stacked`, `offset`, or `initial`. Import validates IDs and bounds, asks the user to apply the patch, and records undo history. Font/text/layout patches rebuild explicit positioned elements; appearance patches retain them. There is no implicit network model connection. Agents should recommend only supplied font IDs and preserve requested spelling.
+Allowed fields: `text,fontId,layout,tracking,leading,rotation,outline,stroke,offset`. Layout is `lines`, `horizontal`, `stacked`, `offset`, or `initial`. `lines` preserves typed returns and blank rows while retaining per-word controls; `horizontal` flattens whitespace without modifying stored text. Import validates IDs and bounds, asks the user to apply the patch, and records undo history. Font/text/layout patches rebuild explicit positioned elements; appearance patches retain them. There is no implicit network model connection. Agents should recommend only supplied font IDs and preserve requested spelling.
 
 Project JSON contains local font paths and brand work. Do not publish it or upload it to a model without the user's intended authorization. Source fonts are never packaged in SVG/PNG exports. Users remain responsible for their own font licensing.

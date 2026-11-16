@@ -81,7 +81,7 @@ test(
       const {
         data: { fonts },
       } = await post("/api/catalog", {
-        text: "Font Reviver",
+        text: "Font\nReviver",
         sources: [
           {
             type: "files",
@@ -94,7 +94,7 @@ test(
       const { res, data } = await post("/api/compose", {
         words: [
           {
-            text: "Font Reviver",
+            text: "Font\nReviver",
             fontId: fonts[0].id,
             x: 100,
             y: 300,
@@ -146,3 +146,22 @@ test(
     }
   },
 );
+
+test("manual returns preserve word groups and blank rows; one-line mode keeps source text", () => {
+  const text = "mark this\n\nword";
+  const d = makeDesign(text, "a", { layout: "lines" }),
+    measure = (t) => t.length * 40;
+  const words = plan(d, measure);
+  assert.deepEqual(
+    words.map((w) => w.text),
+    ["mark", "this", "word"],
+  );
+  assert.equal(words[0].y, words[1].y);
+  assert.ok(words[1].x > words[0].x);
+  assert.equal(words[2].y - words[0].y, 230);
+  const flat = plan({ ...d, layout: "horizontal" }, measure);
+  assert.equal(new Set(flat.map((w) => w.y)).size, 1);
+  assert.equal(d.text, text);
+  assert.deepEqual(plan(d, measure), words);
+  assert.equal(applyPatch(d, { layout: "lines" }).layout, "lines");
+});

@@ -109,8 +109,8 @@ header {
 }
 .workbench {
   display: grid;
-  grid-template-columns: 255px minmax(0, 1fr) 265px;
-  min-height: calc(100vh - 104px);
+  grid-template-columns: 280px minmax(0, 1fr) 265px;
+  min-height: 100vh;
 }
 aside {
   padding: 20px;
@@ -649,4 +649,168 @@ dialog::backdrop {
     white-space: nowrap;
     flex-shrink: 0;
   }
+}
+
+/* Sidebar workbench: branding, words, and controls share one vertical rail. */
+.workbench {
+  align-items: start;
+}
+.sources,
+.inspector {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.sidebar-header {
+  padding: 0 0 22px;
+  height: auto;
+  display: block;
+  border: 0;
+  background: transparent;
+}
+.sidebar-header .brand {
+  width: 80px;
+  height: 84px;
+}
+.section {
+  border-top: 1px solid var(--line);
+}
+.section > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.section > summary::-webkit-details-marker {
+  display: none;
+}
+.section > summary::after {
+  content: "+";
+  font: 16px monospace;
+  color: var(--muted);
+}
+.section[open] > summary::after {
+  content: "−";
+}
+.section-body {
+  padding: 0 0 16px;
+}
+.section-body > .heading {
+  justify-content: flex-end;
+  margin: 0;
+}
+.section-body .section {
+  margin-top: 16px;
+}
+.sources .global-controls {
+  position: static;
+  display: block;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.sources .global-controls label {
+  margin: 4px 0 18px;
+  max-width: none;
+  font-size: 12px;
+}
+.sources .header-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: 100%;
+  margin: 0;
+}
+.sources .header-actions button {
+  font-size: 12px;
+}
+.text-input textarea {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  min-height: 116px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fffef9;
+  color: var(--ink);
+  font:
+    22px/1.35 Arial,
+    sans-serif;
+  letter-spacing: 0;
+}
+.flow-options {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.flow-options button {
+  flex: 1;
+  font-size: 12px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+main {
+  min-height: 100vh;
+}
+@media (max-width: 1100px) {
+  .inspector {
+    position: static;
+    display: block;
+    grid-column: 1/-1;
+    height: auto;
+    overflow: visible;
+  }
+}
+@media (max-width: 700px) {
+  .sources,
+  .inspector {
+    position: static;
+    height: auto;
+  }
+  .sources.mobile-open,
+  .inspector.mobile-open {
+    position: fixed;
+    height: auto;
+    overflow-y: auto;
+  }
+  .sidebar-header {
+    padding: 0 0 20px;
+  }
+  .sources .global-controls {
+    position: static;
+  }
+  .mobile-close {
+    margin-bottom: 10px;
+  }
+  .text-input textarea {
+    font-size: 22px;
+  }
+  .section-body .heading {
+    margin-top: 0;
+  }
+  .sources .heading,
+  .inspector .heading {
+    margin-top: 0;
+  }
+}
+.flow-options button {
+  white-space: nowrap;
+  padding: 8px 6px;
+  font-size: 11px;
 }

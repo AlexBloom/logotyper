@@ -10,91 +10,162 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <header>
-      <img src="/brand.svg" alt="mark this word" class="brand" /><label
-        class="text-input"
-        >YOUR WORDS<input
-          id="words"
-          value="mark this word"
-          maxlength="200"
-          aria-label="Your words"
-      /></label>
-      <div class="header-actions">
-        <button id="undo">Undo</button><button id="redo">Redo</button
-        ><button id="save">Save project ↓</button><button id="open">Open</button
-        ><input id="project-file" type="file" accept=".json" hidden />
-      </div>
-    </header>
     <div class="workbench">
       <aside class="sources">
         <button class="mobile-close" data-close-panel>Done</button>
-        <div class="heading">
-          <h2>Sources</h2>
-          <button id="reload">Refresh</button>
-        </div>
-        <label class="check"
-          ><input type="checkbox" id="system" checked /> System fonts</label
-        ><label class="check"
-          ><input type="checkbox" id="folders-enabled" /> Font folders /
-          files</label
-        >
-        <div class="folder-controls">
-          <div id="folder-list"></div>
-          <div class="inline">
+        <header class="sidebar-header">
+          <img src="/brand.svg" alt="mark this word" class="brand" />
+        </header>
+        <details class="section" open data-section="words">
+          <summary>Your words</summary>
+          <div class="section-body">
+            <label class="text-input"
+              ><span class="sr-only">Your words</span
+              ><textarea
+                id="words"
+                rows="4"
+                maxlength="200"
+                aria-label="Your words"
+                spellcheck="false"
+              >
+mark this word</textarea
+              >
+            </label>
+            <div class="flow-options" aria-label="Text flow">
+              <button data-flow="lines">Use returns</button
+              ><button data-flow="horizontal">One line</button>
+            </div>
+            <p class="hint">
+              Enter or Shift + Enter to add a line break. One line keeps your
+              returns for later.
+            </p>
+            <label
+              >Layout<select id="layout">
+                <option value="lines">Use text line breaks</option>
+                <option value="horizontal">All on one line</option>
+                <option value="stacked">Stacked</option>
+                <option value="offset">Offset words</option>
+                <option value="initial">Initials + name</option>
+              </select></label
+            >
+          </div>
+        </details>
+        <details class="section" open data-section="typography">
+          <summary>Typography</summary>
+          <div class="section-body">
+            <div class="global-controls">
+              <label
+                >Letter spacing <span id="tracking-value">0</span
+                ><input
+                  id="tracking"
+                  type="range"
+                  min="-4"
+                  max="12"
+                  step="0.1"
+                  value="0" /></label
+              ><label
+                >Line height <span id="leading-value">1.15</span
+                ><input
+                  id="leading"
+                  type="range"
+                  min="0.8"
+                  max="2"
+                  step="0.01"
+                  value="1.15"
+              /></label>
+            </div>
+          </div>
+        </details>
+        <details class="section" open data-section="sources">
+          <summary>Sources</summary>
+          <div class="section-body">
+            <div class="heading">
+              <button id="reload">Refresh</button>
+            </div>
+            <label class="check"
+              ><input type="checkbox" id="system" checked /> System fonts</label
+            ><label class="check"
+              ><input type="checkbox" id="folders-enabled" /> Font folders /
+              files</label
+            >
+            <div class="folder-controls">
+              <div id="folder-list"></div>
+              <div class="inline">
+                <input
+                  id="folder-path"
+                  placeholder="/path/to/fonts"
+                  aria-label="Font folder path"
+                /><button id="add-folder">+</button>
+              </div>
+              <div id="drop" tabindex="0" role="button">
+                Drop fonts or choose files ↙
+              </div>
+              <input
+                type="file"
+                id="font-files"
+                accept=".otf,.ttf,.ttc,.otc,.dfont"
+                multiple
+                hidden
+              /><button id="choose-folder">Choose folder</button
+              ><input
+                type="file"
+                id="folder-files"
+                webkitdirectory
+                multiple
+                hidden
+              />
+            </div>
+            <label class="check"
+              ><input type="checkbox" id="google" /> Google Fonts
+              <small>20-family starter</small></label
+            ><button class="provider" id="adobe">
+              Adobe Fonts <span>Setup ↗</span></button
+            ><button class="provider" id="premium">
+              Premium libraries <span>Setup ↗</span>
+            </button>
+          </div>
+        </details>
+        <details class="section" open data-section="category">
+          <summary>Category & filters</summary>
+          <div class="section-body">
+            <div id="categories" class="chips">
+              <button data-category="all" class="active">All</button
+              ><button data-category="sans">Sans</button
+              ><button data-category="serif">Serif</button
+              ><button data-category="script">Script</button
+              ><button data-category="other">Other</button>
+            </div>
             <input
-              id="folder-path"
-              placeholder="/path/to/fonts"
-              aria-label="Font folder path"
-            /><button id="add-folder">+</button>
+              id="search"
+              type="search"
+              placeholder="Search family or tag"
+              aria-label="Search fonts"
+            />
+            <div id="tags" class="chips"></div>
           </div>
-          <div id="drop" tabindex="0" role="button">
-            Drop fonts or choose files ↙
+        </details>
+        <details class="section" open data-section="explore">
+          <summary>Explore</summary>
+          <div class="section-body">
+            <div class="heading">
+              <button id="reset">Reset</button>
+            </div>
+            <button id="shuffle" class="wide">Shuffle fonts ⤨</button
+            ><label>Seed<input id="seed" type="number" value="9000" /></label>
+            <p class="hint" id="inventory-status">Discovering your fonts…</p>
           </div>
-          <input
-            type="file"
-            id="font-files"
-            accept=".otf,.ttf,.ttc,.otc,.dfont"
-            multiple
-            hidden
-          /><button id="choose-folder">Choose folder</button
-          ><input
-            type="file"
-            id="folder-files"
-            webkitdirectory
-            multiple
-            hidden
-          />
-        </div>
-        <label class="check"
-          ><input type="checkbox" id="google" /> Google Fonts
-          <small>20-family starter</small></label
-        ><button class="provider" id="adobe">
-          Adobe Fonts <span>Setup ↗</span></button
-        ><button class="provider" id="premium">
-          Premium libraries <span>Setup ↗</span>
-        </button>
-        <h2>Category</h2>
-        <div id="categories" class="chips">
-          <button data-category="all" class="active">All</button
-          ><button data-category="sans">Sans</button
-          ><button data-category="serif">Serif</button
-          ><button data-category="script">Script</button
-          ><button data-category="other">Other</button>
-        </div>
-        <input
-          id="search"
-          type="search"
-          placeholder="Search family or tag"
-          aria-label="Search fonts"
-        />
-        <div id="tags" class="chips"></div>
-        <div class="heading">
-          <h2>Explore</h2>
-          <button id="reset">Reset</button>
-        </div>
-        <button id="shuffle" class="wide">Shuffle fonts ⤨</button
-        ><label>Seed<input id="seed" type="number" value="9000" /></label>
-        <p class="hint" id="inventory-status">Discovering your fonts…</p>
+        </details>
+        <details class="section" open data-section="project">
+          <summary>Project</summary>
+          <div class="section-body">
+            <div class="header-actions">
+              <button id="undo">Undo</button><button id="redo">Redo</button
+              ><button id="save">Save project ↓</button
+              ><button id="open">Open</button
+              ><input id="project-file" type="file" accept=".json" hidden />
+            </div>
+          </div>
+        </details>
         <p class="hint">
           Fonts remain local. Users are responsible for their own font
           licensing.
@@ -110,34 +181,6 @@
           </div>
           <span id="status" role="status" aria-live="polite"
             >Loading fonts…</span
-          >
-        </div>
-        <div class="global-controls">
-          <label
-            >Letter spacing <span id="tracking-value">0</span
-            ><input
-              id="tracking"
-              type="range"
-              min="-4"
-              max="12"
-              step="0.1"
-              value="0" /></label
-          ><label
-            >Line height <span id="leading-value">1.15</span
-            ><input
-              id="leading"
-              type="range"
-              min="0.8"
-              max="2"
-              step="0.01"
-              value="1.15" /></label
-          ><label
-            >Layout<select id="layout">
-              <option value="horizontal">Side by side</option>
-              <option value="stacked">Stacked</option>
-              <option value="offset">Offset words</option>
-              <option value="initial">Initials + name</option>
-            </select></label
           >
         </div>
         <div id="notice" role="alert" hidden></div>
@@ -172,96 +215,117 @@
       </main>
       <aside class="inspector">
         <button class="mobile-close" data-close-panel>Done</button>
-        <div class="heading">
-          <h2>Selection</h2>
-          <button id="clear-selection">Clear</button>
-        </div>
-        <div id="metadata">
-          <p class="hint">
-            Click a mark to inspect its type, explore related fonts, or refine
-            it.
-          </p>
-        </div>
-        <div id="selection-controls" hidden>
-          <button id="like" class="wide">More like this ↗</button
-          ><button id="refine" class="wide primary">Refine selected mark</button
-          ><button id="vary" class="wide">10 stepped variations</button>
-          <h2>Appearance</h2>
-          <label class="check"
-            ><input id="outline" type="checkbox" /> Outline text</label
-          ><label
-            >Stroke width<input
-              id="stroke"
-              type="range"
-              min="0.5"
-              max="5"
-              step="0.1"
-              value="1.5" /></label
-          ><label
-            >Offset distance<input
-              id="offset"
-              type="range"
-              min="-100"
-              max="150"
-              value="45" /></label
-          ><label
-            >Rotate all words<input
-              id="rotation"
-              type="range"
-              min="-45"
-              max="45"
-              step="1"
-              value="0"
-          /></label>
-          <h2>Word / letter controls</h2>
-          <label>Element<select id="element"></select></label
-          ><label>Font<select id="element-font"></select></label>
-          <div class="inline">
-            <label
-              >X offset<input
-                id="element-x"
-                type="number"
-                value="0"
-                min="-500"
-                max="500" /></label
-            ><label
-              >Y offset<input
-                id="element-y"
-                type="number"
-                value="0"
-                min="-500"
-                max="500"
-            /></label>
+        <details class="section" open data-section="selection">
+          <summary>Selection</summary>
+          <div class="section-body">
+            <div class="heading">
+              <button id="clear-selection">Clear</button>
+            </div>
+            <div id="metadata">
+              <p class="hint">
+                Click a mark to inspect its type, explore related fonts, or
+                refine it.
+              </p>
+            </div>
+            <div id="selection-controls" hidden>
+              <button id="like" class="wide">More like this ↗</button
+              ><button id="refine" class="wide primary">
+                Refine selected mark</button
+              ><button id="vary" class="wide">10 stepped variations</button>
+              <details class="section" open data-section="appearance">
+                <summary>Appearance</summary>
+                <div class="section-body">
+                  <label class="check"
+                    ><input id="outline" type="checkbox" /> Outline text</label
+                  ><label
+                    >Stroke width<input
+                      id="stroke"
+                      type="range"
+                      min="0.5"
+                      max="5"
+                      step="0.1"
+                      value="1.5" /></label
+                  ><label
+                    >Offset distance<input
+                      id="offset"
+                      type="range"
+                      min="-100"
+                      max="150"
+                      value="45" /></label
+                  ><label
+                    >Rotate all words<input
+                      id="rotation"
+                      type="range"
+                      min="-45"
+                      max="45"
+                      step="1"
+                      value="0"
+                  /></label>
+                </div>
+              </details>
+              <details class="section" open data-section="elements">
+                <summary>Word / letter controls</summary>
+                <div class="section-body">
+                  <label>Element<select id="element"></select></label
+                  ><label>Font<select id="element-font"></select></label>
+                  <div class="inline">
+                    <label
+                      >X offset<input
+                        id="element-x"
+                        type="number"
+                        value="0"
+                        min="-500"
+                        max="500" /></label
+                    ><label
+                      >Y offset<input
+                        id="element-y"
+                        type="number"
+                        value="0"
+                        min="-500"
+                        max="500"
+                    /></label>
+                  </div>
+                  <label
+                    >Element rotation<input
+                      id="element-rotation"
+                      type="range"
+                      min="-180"
+                      max="180"
+                      value="0" /></label
+                  ><button id="explode" class="wide">
+                    Edit selected word as letters</button
+                  ><button id="duplicate-element" class="wide">
+                    Duplicate selected element</button
+                  ><button id="remove-element" class="wide">
+                    Remove selected element</button
+                  ><label
+                    >Add a mark<input
+                      id="dingbat"
+                      placeholder="e.g. +  *  →"
+                      maxlength="8" /></label
+                  ><button id="add-dingbat" class="wide">
+                    Add typed symbol
+                  </button>
+                </div>
+              </details>
+            </div>
           </div>
-          <label
-            >Element rotation<input
-              id="element-rotation"
-              type="range"
-              min="-180"
-              max="180"
-              value="0" /></label
-          ><button id="explode" class="wide">
-            Edit selected word as letters</button
-          ><button id="duplicate-element" class="wide">
-            Duplicate selected element</button
-          ><button id="remove-element" class="wide">
-            Remove selected element</button
-          ><label
-            >Add a mark<input
-              id="dingbat"
-              placeholder="e.g. +  *  →"
-              maxlength="8" /></label
-          ><button id="add-dingbat" class="wide">Add typed symbol</button>
-        </div>
-        <h2>Agent help · optional</h2>
-        <p class="hint">
-          Export a brief for your agent. Import its proposed settings to preview
-          an undoable change. No model is needed to browse or iterate.
-        </p>
-        <button id="agent-brief" class="wide">
-          Copy / download agent brief</button
-        ><button id="agent-import" class="wide">Import suggestion JSON</button
-        ><input type="file" id="agent-file" accept=".json" hidden />
+        </details>
+        <details class="section" data-section="agent">
+          <summary>Agent help · optional</summary>
+          <div class="section-body">
+            <p class="hint">
+              Export a brief for your agent. Import its proposed settings to
+              preview an undoable change. No model is needed to browse or
+              iterate.
+            </p>
+            <button id="agent-brief" class="wide">
+              Copy / download agent brief</button
+            ><button id="agent-import" class="wide">
+              Import suggestion JSON</button
+            ><input type="file" id="agent-file" accept=".json" hidden />
+          </div>
+        </details>
       </aside>
     </div>
     <dialog id="provider-dialog">
@@ -272,7 +336,7 @@
       ><button id="close-dialog">Close</button>
     </dialog>
     <nav class="mobile-tools" aria-label="Workspace panels">
-      <button data-panel="sources">Fonts & filters</button
+      <button data-panel="sources">Words & fonts</button
       ><button data-panel="inspector">Selection & tools</button>
     </nav>
     <script type="module" src="/app.js"></script>

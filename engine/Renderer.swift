@@ -22,7 +22,7 @@ if let dir=req.fontDirectory {
  if let it=fm.enumerator(at:URL(fileURLWithPath:dir),includingPropertiesForKeys:nil,options:[.skipsHiddenFiles]) {for case let u as URL in it {if ["ttf","otf","ttc","otc","dfont"].contains(u.pathExtension.lowercased()) {paths.append(u.path)}}}
 }
 if paths.isEmpty && req.fontDirectory==nil && req.fontFiles==nil {
- for name in (CTFontManagerCopyAvailablePostScriptNames() as! [String]).sorted() {let f=CTFontCreateWithName(name as CFString,100,nil);candidates.append((f,FontInfo(id:name,family:CTFontCopyFamilyName(f) as String,name:name,source:nil)))}
+ for name in (CTFontManagerCopyAvailablePostScriptNames() as! [String]).sorted() {let f=CTFontCreateWithName(name as CFString,100,nil);candidates.append((f,FontInfo(id:name,family:CTFontCopyFamilyName(f) as String,name:name,source:(CTFontCopyAttribute(f,kCTFontURLAttribute) as? URL)?.path)))}
 } else {
  for path in Set(paths).sorted() {guard let ds=CTFontManagerCreateFontDescriptorsFromURL(URL(fileURLWithPath:path) as CFURL) as? [CTFontDescriptor] else {continue};for d in ds {let f=CTFontCreateWithFontDescriptor(d,100,nil);let name=CTFontCopyPostScriptName(f) as String;candidates.append((f,FontInfo(id:name,family:CTFontCopyFamilyName(f) as String,name:name,source:path)))}}
 }

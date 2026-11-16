@@ -67,5 +67,5 @@ test('MCP stdio discovery is machine-readable and keeps stdout clean', async () 
   child.stdout.on('data', chunk => output += chunk);
   child.stdin.end(JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2024-11-05' } }) + '\n' + JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/list' }) + '\n');
   await new Promise((resolve, reject) => { child.on('error', reject); child.on('exit', code => code ? reject(new Error(`MCP exited ${code}`)) : resolve()); });
-  const messages = output.trim().split('\n').map(JSON.parse); assert.equal(messages[0].result.serverInfo.name, 'wordmark-generator'); assert.equal(messages[1].result.tools.length, 2);
+  const messages = output.trim().split('\n').map(JSON.parse); assert.equal(messages[0].result.serverInfo.name, 'wordmark-generator'); assert.deepEqual(messages[1].result.tools.map(t=>t.name),['generate_wordmarks','list_fonts','catalog_fonts','compose_mark','iterate_mark']);
 });

@@ -1473,3 +1473,14 @@ dialog::backdrop {
     display: none;
   }
 }
+/* Join only the left sidebar's top-level accordion rows. */
+.sources > .panel-content > .section {
+  width: calc(100% + 24px);
+  margin: 0 -12px;
+}
+.sources > .panel-content > .section:first-of-type {
+  margin-top: 6px;
+}
+.sources > .panel-content > .section:last-of-type {
+  margin-bottom: 6px;
+}

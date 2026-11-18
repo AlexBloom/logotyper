@@ -19,7 +19,7 @@ func star(_ x:CGFloat,_ y:CGFloat,_ r:CGFloat,_ k:Int=4)->CGPath {var pts:[CGPoi
 func svgPath(_ p:CGPath)->String {var s="";p.applyWithBlock{ptr in let e=ptr.pointee;let q=e.points;func xy(_ i:Int)->String {String(format:"%.2f %.2f",Double(q[i].x),Double(q[i].y))};switch e.type {case .moveToPoint:s+="M"+xy(0);case .addLineToPoint:s+="L"+xy(0);case .addQuadCurveToPoint:s+="Q"+xy(0)+" "+xy(1);case .addCurveToPoint:s+="C"+xy(0)+" "+xy(1)+" "+xy(2);case .closeSubpath:s+="Z";@unknown default:break}};return s}
 func makeImage(_ w:Int,_ h:Int,_ draw:(CGContext)->Void)->CGImage {let c=CGContext(data:nil,width:w,height:h,bitsPerComponent:8,bytesPerRow:w*4,space:CGColorSpaceCreateDeviceRGB(),bitmapInfo:CGImageAlphaInfo.premultipliedLast.rawValue)!;c.setFillColor(CGColor(gray:1,alpha:1));c.fill(CGRect(x:0,y:0,width:w,height:h));c.translateBy(x:0,y:CGFloat(h));c.scaleBy(x:1,y:-1);draw(c);return c.makeImage()!}
 func savePNG(_ im:CGImage,_ file:String){let dst=CGImageDestinationCreateWithURL(URL(fileURLWithPath:file) as CFURL,UTType.png.identifier as CFString,1,nil)!;CGImageDestinationAddImage(dst,im,nil);CGImageDestinationFinalize(dst)}
-func render(_ c:CGContext,_ sh:[Shape],inverse:Bool=false){c.setFillColor(CGColor(red:inverse ? 1:41.0/255,green:inverse ? 1:43.0/255,blue:inverse ? 1:36.0/255,alpha:1));c.setStrokeColor(CGColor(red:inverse ? 1:41.0/255,green:inverse ? 1:43.0/255,blue:inverse ? 1:36.0/255,alpha:1));for a in sh {c.addPath(a.p);if a.fill{c.fillPath()}else{c.setLineWidth(a.width);c.strokePath()}}}
+func render(_ c:CGContext,_ sh:[Shape],inverse:Bool=false){c.setFillColor(CGColor(red:inverse ? 1:0,green:inverse ? 1:0,blue:inverse ? 1:0,alpha:1));c.setStrokeColor(CGColor(red:inverse ? 1:0,green:inverse ? 1:0,blue:inverse ? 1:0,alpha:1));for a in sh {c.addPath(a.p);if a.fill{c.fillPath()}else{c.setLineWidth(a.width);c.strokePath()}}}
 
 
 var shapes:[Shape]=[]
@@ -34,7 +34,7 @@ for w in doc.words {
  var t=CGAffineTransform(translationX:w.x,y:w.y).rotated(by:w.rotation * .pi/180).scaledBy(x:w.size/100,y:-w.size/100)
  shapes.append(Shape(p:p.copy(using:&t)!,fill:!w.outline,width:w.stroke))
 }
-let paths=shapes.map{"<path d=\"\(svgPath($0.p))\" fill=\"\($0.fill ? "#292b24":"none")\" stroke=\"\($0.fill ? "none":"#292b24")\" stroke-width=\"\($0.width)\"/>"}.joined()
+let paths=shapes.map{"<path d=\"\(svgPath($0.p))\" fill=\"\($0.fill ? "#000000":"none")\" stroke=\"\($0.fill ? "none":"#000000")\" stroke-width=\"\($0.width)\"/>"}.joined()
 let svg="<!-- Users are responsible for their own font licensing. -->\n<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 \(doc.width) \(doc.height)\">"+paths+"</svg>"
 try svg.write(toFile:doc.output+".svg",atomically:true,encoding:.utf8)
 savePNG(makeImage(doc.width*2,doc.height*2){c in c.scaleBy(x:2,y:2);render(c,shapes)},doc.output+".png")

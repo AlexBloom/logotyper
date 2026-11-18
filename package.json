@@ -1,6 +1,6 @@
 {
-  "name": "wordmark-generator",
-  "version": "2.0.0",
+  "name": "logotyper",
+  "version": "2.1.0",
   "description": "the v1 of your wordmark 9000x faster",
   "type": "module",
   "license": "MIT",
@@ -12,7 +12,8 @@
   ],
   "bin": {
     "wordmark-generator": "bin/wordmark.mjs",
-    "mark-this-word": "bin/wordmark.mjs"
+    "mark-this-word": "bin/wordmark.mjs",
+    "logotyper": "bin/wordmark.mjs"
   },
   "scripts": {
     "start": "node bin/wordmark.mjs serve",

@@ -1,18 +1,18 @@
-# mark this word
+# logotyper
 
 **the v1 of your wordmark 9000x faster**
 
-A local typography workbench: type a name, browse it in real fonts, collect promising directions, then refine and export vector outlines. The stacked identity uses an outlined architect-style face. Source fonts are never bundled.
+A local typography workbench: type a name, browse it in real fonts, collect promising directions, then refine and export vector outlines. The supplied logotyper SVG anchors a classic Mac interface with neutral gray panels, black controls, etched groups and compact pixel labels. User source fonts are never bundled.
 
-![mark this word workbench](docs/live-preview.jpg)
+![logotyper workbench](docs/live-preview.jpg)
 
 ## Run locally
 
 Requires **macOS, Node 22+, and Xcode Command Line Tools (Swift)**. No npm runtime dependencies or model API key required.
 
 ```sh
-git clone https://github.com/AlexBloom/wordmark-generator.git
-cd wordmark-generator
+git clone https://github.com/AlexBloom/logotyper.git
+cd logotyper
 npm ci
 npm run build
 npm start
@@ -96,9 +96,9 @@ MCP client configuration (replace the path with your actual clone path):
 ```json
 {
   "mcpServers": {
-    "wordmark-generator": {
+    "logotyper": {
       "command": "node",
-      "args": ["/absolute/path/to/wordmark-generator/bin/wordmark.mjs", "mcp"]
+      "args": ["/absolute/path/to/logotyper/bin/wordmark.mjs", "mcp"]
     }
   }
 }
@@ -115,7 +115,7 @@ For importing multiple individual SVGs, use the optional development plugin:
 1. In Figma desktop, create a new development plugin to obtain your own Figma-assigned plugin ID.
 2. Run `node scripts/configure-figma.mjs YOUR_PLUGIN_ID`.
 3. Import the generated `figma-plugin/manifest.local.json` as a development plugin.
-4. Run **Wordmark Generator** in a design file and choose exported SVGs. The plugin imports vector paths and zooms to the results. It makes no network requests.
+4. Run **Logotyper** in a design file and choose exported SVGs. The plugin imports vector paths and zooms to the results. It makes no network requests.
 
 **Illustrator:** Export a refined mark, then click **Open in Illustrator**. The local server opens the SVG selection sheet with the installed Adobe Illustrator app. If Illustrator is missing or registered under another name, download the SVG and open it manually. Outputs are SVG files, not native `.ai` documents. Original fonts are not needed to view outlined artwork.
 
@@ -139,3 +139,11 @@ npm run dev     # Local web app
 ```
 
 `engine/` renders typography and boards; `lib/` contains the shared runtime, HTTP and MCP entry points; `web/` is the local GUI; `skills/` contains the portable skill; `figma-plugin/` is the optional importer. `dev` is the development branch; `main` is protected and updated through a pull request. No production hosting is configured.
+
+## Interface font and contrast
+
+UI chrome uses [Geist Pixel Square](https://github.com/vercel/geist-font), published by Vercel under SIL OFL 1.1. The unmodified 28,540-byte WOFF2 is served locally, preloaded with `font-display: swap`, and accompanied by its license and pinned source in [web/fonts](web/fonts/). This UI font is separate from the font library used for wordmarks. No font framework, animation library, or external font service is needed for the interface.
+
+The palette contains only black, white and neutral grays. Active controls use black/white; informational and secondary text retain or improve their previous contrast against each surface. See [the measured contrast audit](docs/contrast-audit.md). Live type previews, bounded card rendering and deferred outlined exports remain unchanged.
+
+The public repository and package are now **logotyper**. The `logotyper` executable is primary; `wordmark-generator`, `mark-this-word`, the `$wordmark-generator` skill trigger, v2 project JSON and legacy batch commands remain compatible. Local browser saves migrate from the former project key when present.

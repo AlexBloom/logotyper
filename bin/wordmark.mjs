@@ -56,7 +56,7 @@ try {
     );
   } else if (command === "--help" || command === "help")
     console.log(
-      'Wordmark Generator — the v1 of your wordmark 9000x faster\n\nserve [--port 9000]\ngenerate --name "Brand" [--name "Studio"] [--combine] --count 10|50|100|250 [--font-dir PATH] [--out NEW_DIR] [--seed 9000]\ngenerate --request request.json | --stdin\nfonts [--font-dir PATH] [--name "Brand"]\ncatalog --request sources.json\ncompose --request positioned-mark.json\niterate --request design.json\nbuild\nmcp\n\nmacOS + Node 22+ + Xcode Command Line Tools. Users are responsible for their own font licensing.',
+      'Logotyper — the v1 of your wordmark 9000x faster\n\nserve [--port 9000]\ngenerate --name "Brand" [--name "Studio"] [--combine] --count 10|50|100|250 [--font-dir PATH] [--out NEW_DIR] [--seed 9000]\ngenerate --request request.json | --stdin\nfonts [--font-dir PATH] [--name "Brand"]\ncatalog --request sources.json\ncompose --request positioned-mark.json\niterate --request design.json\nbuild\nmcp\n\nmacOS + Node 22+ + Xcode Command Line Tools. Users are responsible for their own font licensing.',
     );
   else throw new Error(`Unknown command: ${command}. Run --help.`);
 } catch (e) {

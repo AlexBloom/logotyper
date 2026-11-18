@@ -312,7 +312,7 @@ export function validateProject(p) {
     !p.rounds.length ||
     p.rounds.length > 100
   )
-    throw Error("Not a supported mark this word project");
+    throw Error("Not a supported logotyper project");
   const settings = p.settings;
   applyPatch(makeDesign("Project", "font"), settings || {});
   if (

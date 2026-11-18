@@ -1,6 +1,6 @@
 ## Live workbench / v2
 
-`GET /` is mark this word. The previous app remains at `/batch.html`. No model is invoked by live previews, deterministic ranking/shuffle, collection rounds, layout changes, or ten-step variations.
+`GET /` is logotyper. The previous app remains at `/batch.html`. No model is invoked by live previews, deterministic ranking/shuffle, collection rounds, layout changes, or ten-step variations.
 
 ### Discover fonts
 

@@ -6,15 +6,24 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <title>mark this word</title>
+    <title>logotyper</title>
+    <link
+      rel="preload"
+      href="/fonts/GeistPixel-Square.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <div class="workbench">
       <aside class="sources">
         <button class="mobile-close" data-close-panel>Done</button>
+        <div class="window-title"><span>logotyper</span></div>
         <header class="sidebar-header">
-          <img src="/brand.svg" alt="mark this word" class="brand" />
+          <img src="/logotyper.svg" alt="logotyper" class="brand" />
+          <small class="app-version">Version 2.1</small>
         </header>
         <details class="section" open data-section="words">
           <summary>Your words</summary>
@@ -28,7 +37,7 @@
                 aria-label="Your words"
                 spellcheck="false"
               >
-mark this word</textarea
+logotyper</textarea
               >
             </label>
             <div class="flow-options" aria-label="Text flow">

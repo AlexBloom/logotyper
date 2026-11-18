@@ -137,14 +137,14 @@ function draw(svg, d, interactive = false) {
     t.style.whiteSpace = "pre";
     if (w.outline) {
       t.style.fill = "none";
-      t.style.stroke = "#292b24";
+      t.style.stroke = "#000000";
       t.style.strokeWidth = w.stroke;
     }
     if (interactive) {
       t.dataset.index = i;
       t.style.cursor = "grab";
       if (i === elementIndex) {
-        t.style.filter = "drop-shadow(0 2px 0 #52694b22)";
+        t.style.filter = "drop-shadow(0 2px 0 #00000022)";
       }
       t.onpointerdown = (e) => startDrag(e, i);
     }
@@ -179,7 +179,7 @@ function state() {
 function persist() {
   $("#export-links").replaceChildren();
   try {
-    localStorage.setItem("mark-this-word-project-v2", JSON.stringify(state()));
+    localStorage.setItem("logotyper-project-v2", JSON.stringify(state()));
   } catch {
     note("Browser storage is full. Save your project file to keep this work.");
   }
@@ -379,7 +379,7 @@ function render() {
       : candidates()
           .slice(start, limit)
           .map((f) =>
-            makeDesign($("#words").value || "mark this word", f.id, settings),
+            makeDesign($("#words").value || "logotyper", f.id, settings),
           );
   for (const d of items) $("#grid").append(card(d, mode === "collect"));
   $("#status").textContent =
@@ -537,7 +537,7 @@ async function refresh() {
     const all = sources.length
       ? (
           await api("/api/catalog", {
-            text: $("#words").value || "mark this word",
+            text: $("#words").value || "logotyper",
             sources,
           })
         ).fonts
@@ -617,7 +617,7 @@ $("#words").oninput = () => {
     syncSettings();
   }
   if (selected && !selected.elements && mode === "refine")
-    selected.text = $("#words").value || "mark this word";
+    selected.text = $("#words").value || "logotyper";
   if (selected?.elements)
     note(
       "This refined mark contains positioned letterforms. Return to Browse to start a new text exploration.",
@@ -910,7 +910,7 @@ function download(name, data, type = "application/json") {
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 $("#save").onclick = () =>
-  download("mark-this-word-project.json", JSON.stringify(state(), null, 2));
+  download("logotyper-project.json", JSON.stringify(state(), null, 2));
 $("#open").onclick = () => $("#project-file").click();
 $("#project-file").onchange = async (e) => {
   try {
@@ -1064,7 +1064,7 @@ $("#agent-brief").onclick = async () => {
     },
   };
   const text = JSON.stringify(brief, null, 2);
-  download("mark-this-word-agent-brief.json", text);
+  download("logotyper-agent-brief.json", text);
   try {
     await navigator.clipboard.writeText(text);
     note(
@@ -1161,7 +1161,10 @@ $("#drop").ondrop = async (e) => {
   }
 };
 try {
-  const saved = JSON.parse(localStorage.getItem("mark-this-word-project-v2"));
+  const saved = JSON.parse(
+    localStorage.getItem("logotyper-project-v2") ||
+      localStorage.getItem("mark-this-word-project-v2"),
+  );
   if (saved?.schemaVersion === 2) {
     validateProject(saved);
     rounds = saved.rounds;

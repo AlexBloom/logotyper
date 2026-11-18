@@ -1,4 +1,4 @@
-# mark this word — agent handoff
+# logotyper — agent handoff
 
 Read PROJECT.md and STATUS.md first. This repository is usable by any coding agent; no conversation-specific state is required. CLAUDE.md imports this file.
 
@@ -33,6 +33,8 @@ Preserve user text. Never install fonts globally. Do not bundle source fonts. Re
 
 Font licensing is the user's responsibility. Keep the disclaimer in the UI, README, and exports. The software's MIT license does not license fonts.
 
-Work on dev or a branch off dev. main is protected and updated via PR. Do not release or deploy publicly unless the user explicitly requests it. Never commit secrets, font files, uploads, local paths from user font catalogs, or generated private brand work. Ignore .wordmark/ and .cache/. Do not discard someone else's changes. Update STATUS.md when infrastructure, CI, or preview setup changes.
+Work on dev or a branch off dev. main is protected and updated via PR. Do not release or deploy publicly unless the user explicitly requests it. Never commit secrets, user font files, uploads, local paths from user font catalogs, or generated private brand work. Ignore .wordmark/ and .cache/. Do not discard someone else's changes. Update STATUS.md when infrastructure, CI, or preview setup changes.
 
 Live-preview invariant: render actual fonts as browser type immediately. Do not introduce raster/agent generation into typing, sliders, filtering or shuffle. Use the same `plan` data for preview and native export. Keep collection ancestors independent and invalidate exported links after editing. Paid font APIs require licensed onboarding; do not present informational setup panels as connected accounts.
+
+The bundled UI font is the sole font-distribution exception: unmodified Geist Pixel Square under SIL OFL 1.1, with license and pinned provenance in web/fonts/. Keep all font exploration assets local. The app and public repository are named logotyper; preserve legacy CLI/skill aliases and document compatibility.

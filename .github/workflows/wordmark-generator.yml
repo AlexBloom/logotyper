@@ -1,5 +1,5 @@
-name: wordmark generator
-run-name: Wordmark Generator / ${{ inputs.count }} lockups
+name: logotyper
+run-name: Logotyper / ${{ inputs.count }} lockups
 on:
   workflow_dispatch:
     inputs:
@@ -61,7 +61,7 @@ jobs:
       - name: Downloadable exports
         uses: actions/upload-artifact@v4
         with:
-          name: wordmark-generator-exports
+          name: logotyper-exports
           path: |
             output/
             output.zip

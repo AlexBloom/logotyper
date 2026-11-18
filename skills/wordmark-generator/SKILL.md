@@ -3,13 +3,13 @@ name: wordmark-generator
 description: "the v1 of your wordmark 9000x faster. Generate 10, 50, 100, or 250 wordmark lockups from brand names using system fonts or a local font directory; export HTML previews, outlined SVGs, PNGs, and rendered boards."
 ---
 
-# Wordmark Generator / mark this word
+# Logotyper
 
 Use this skill for font-based brand-name explorations and wordmark lockups. Rendering requires macOS, Node 22+, and Xcode Command Line Tools (Swift). This uses real local fonts, not generated font approximations.
 
 Run `node scripts/run.mjs` relative to this skill folder. Run `--help` for available commands.
 
-- Interactive live workbench (mark this word): `node scripts/run.mjs serve --port 9000`, then open `http://127.0.0.1:9000`.
+- Interactive live workbench (logotyper): `node scripts/run.mjs serve --port 9000`, then open `http://127.0.0.1:9000`.
 - Agent/headless: pass a request JSON file with `generate --request /absolute/request.json --out /absolute/new-output-folder`. The output folder must not already exist. Success returns JSON on stdout; errors return nonzero status and JSON on stderr.
 - Font discovery: `fonts --name "Brand"`, optionally `--font-dir /absolute/font-folder`.
 

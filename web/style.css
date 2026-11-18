@@ -1,10 +1,10 @@
 :root {
-  --paper: #f7f5ee;
-  --mat: #e6e5dd;
-  --line: #d2d1c4;
-  --ink: #292b24;
-  --muted: #777b69;
-  --accent: #47604a;
+  --paper: #f5f5f5;
+  --mat: #e5e5e5;
+  --line: #d0d0d0;
+  --ink: #2a2a2a;
+  --muted: #797979;
+  --accent: #5a5a5a;
   font:
     13px Inter,
     Arial,
@@ -27,13 +27,13 @@ select {
 button {
   cursor: pointer;
   border: 1px solid var(--line);
-  background: #faf9f4;
+  background: #f9f9f9;
   border-radius: 4px;
   padding: 8px 10px;
   min-height: 34px;
 }
 button:hover {
-  background: #e4e8db;
+  background: #e6e6e6;
 }
 button.active,
 .primary {
@@ -51,7 +51,7 @@ select {
   padding: 9px;
   border: 1px solid var(--line);
   border-radius: 3px;
-  background: #fffef9;
+  background: #fefefe;
 }
 input[type="range"] {
   padding: 0;
@@ -184,14 +184,14 @@ h2 {
 }
 #drop {
   font-size: 12px;
-  border: 1px dashed #a5ad93;
+  border: 1px dashed #aaaaaa;
   padding: 14px 10px;
   margin: 10px 0;
   cursor: pointer;
   text-align: center;
 }
 #drop.drag {
-  background: #e1e9c8;
+  background: #e5e5e5;
 }
 .provider {
   display: flex;
@@ -252,7 +252,7 @@ main {
   gap: 20px;
   align-items: center;
   padding: 12px 15px;
-  background: #f0f1e9;
+  background: #f0f0f0;
   border: 1px solid var(--line);
   border-radius: 5px;
   margin-bottom: 18px;
@@ -325,14 +325,14 @@ main {
   inset: 0;
   display: grid;
   place-items: center;
-  color: #999;
+  color: #999999;
   font-size: 12px;
 }
 .card footer {
   padding: 9px 12px;
   font-size: 10px;
   color: var(--muted);
-  border-top: 1px solid #eee;
+  border-top: 1px solid #eeeeee;
 }
 .card text {
   fill: var(--ink);
@@ -343,8 +343,8 @@ main {
 }
 #notice {
   padding: 13px;
-  background: #fff2da;
-  border: 1px solid #d8c5a1;
+  background: #f3f3f3;
+  border: 1px solid #c7c7c7;
   line-height: 1.6;
   margin-bottom: 15px;
   font-size: 12px;
@@ -428,13 +428,13 @@ dialog button {
   margin-top: 25px;
 }
 dialog::backdrop {
-  background: #0005;
+  background: #00000055;
 }
 [hidden] {
   display: none !important;
 }
 :focus-visible {
-  outline: 2px solid #a26738;
+  outline: 2px solid #757575;
   outline-offset: 3px;
 }
 @media (min-width: 1700px) {
@@ -738,7 +738,7 @@ dialog::backdrop {
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: #fffef9;
+  background: #fefefe;
   color: var(--ink);
   font:
     22px/1.35 Arial,
@@ -813,4 +813,526 @@ main {
   white-space: nowrap;
   padding: 8px 6px;
   font-size: 11px;
+}
+/* Classic Mac control chrome, with live typography on a plain white stage. */
+@font-face {
+  font-family: "Geist Pixel Square";
+  src: url("/fonts/GeistPixel-Square.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  --paper: #dddddd;
+  --mat: #c8c8c8;
+  --line: #888888;
+  --ink: #000000;
+  --muted: #4a4a4a;
+  --accent: #000000;
+  font:
+    14px/1.45 "Geist Pixel Square",
+    Monaco,
+    monospace;
+  color-scheme: light;
+  accent-color: #000000;
+}
+body {
+  background: var(--mat);
+  color: var(--ink);
+}
+::selection {
+  color: #ffffff;
+  background: #000000;
+}
+.workbench {
+  border: 1px solid #000000;
+  box-shadow: inset 1px 1px #ffffff;
+  min-height: 100vh;
+}
+.sources,
+.inspector {
+  padding: 12px;
+  background: var(--paper);
+  border-color: #000000;
+  scrollbar-color: #777777 #dddddd;
+  scrollbar-width: thin;
+}
+.window-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  margin: -12px -12px 10px;
+  border-bottom: 1px solid #000000;
+  background: repeating-linear-gradient(
+    to bottom,
+    #dddddd 0px,
+    #dddddd 1px,
+    #888888 1px,
+    #888888 2px,
+    #dddddd 2px,
+    #dddddd 4px
+  );
+  box-shadow: inset 1px 1px #ffffff;
+}
+.window-title span {
+  background: var(--paper);
+  padding: 0 9px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 4px 20px;
+  background: none;
+  border: 0;
+  height: auto;
+}
+.sidebar-header .brand {
+  width: 142px;
+  height: 71px;
+  object-fit: contain;
+}
+.app-version {
+  font:
+    11px Arial,
+    sans-serif;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.section {
+  background: var(--paper);
+  border: 1px solid #888888;
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  margin: 6px 0;
+  box-shadow: 1px 1px 0 #ffffff;
+}
+.section > summary {
+  min-height: 30px;
+  padding: 5px 8px;
+  font:
+    14px/1.35 "Geist Pixel Square",
+    Monaco,
+    monospace;
+  border-bottom: 1px solid transparent;
+}
+.section[open] > summary {
+  border-bottom-color: #bbbbbb;
+}
+.section > summary::after {
+  color: #000000;
+  font:
+    14px Monaco,
+    monospace;
+}
+.section-body {
+  padding: 9px 8px 12px;
+}
+.section-body .section {
+  margin: 10px 0 0;
+}
+.section-body > .heading {
+  margin-bottom: 6px;
+}
+button {
+  background: #eeeeee;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 2px;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #999999;
+  min-height: 32px;
+  font-weight: 400;
+  padding: 6px 9px;
+  transition: none;
+}
+button:hover {
+  background: #ffffff;
+}
+button:active {
+  box-shadow:
+    inset 1px 1px #888888,
+    inset -1px -1px #ffffff;
+}
+button.active,
+button.primary,
+.primary,
+.tabs button.active {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+  box-shadow: inset 0 0 0 1px #000000;
+}
+button.active:hover,
+button.primary:hover {
+  background: #000000;
+  color: #ffffff;
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+input,
+select,
+textarea {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow: inset 1px 1px #aaaaaa;
+  caret-color: #000000;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #666666;
+  opacity: 1;
+}
+input[type="checkbox"] {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  padding: 0;
+  display: inline-grid;
+  place-content: center;
+  box-shadow: inset 1px 1px #bbbbbb;
+  background: #ffffff;
+  border: 1px solid #000000;
+  vertical-align: middle;
+}
+input[type="checkbox"]:checked::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #000000;
+  clip-path: polygon(0 42%, 18% 27%, 42% 53%, 83% 0, 100% 16%, 44% 100%);
+}
+input[type="range"] {
+  appearance: none;
+  height: 20px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  accent-color: #000000;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #ffffff;
+  border: 1px solid #000000;
+  box-shadow: 0 1px #ffffff;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 18px;
+  margin-top: -8px;
+  border: 1px solid #000000;
+  border-radius: 0;
+  background: #dddddd;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #888888;
+}
+input[type="range"]::-moz-range-track {
+  height: 3px;
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 16px;
+  border: 1px solid #000000;
+  border-radius: 0;
+  background: #dddddd;
+}
+.text-input textarea {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow: inset 1px 1px #888888;
+  min-height: 112px;
+  font:
+    22px/1.35 Arial,
+    sans-serif;
+}
+.flow-options button {
+  font:
+    12px "Geist Pixel Square",
+    Monaco,
+    monospace;
+  padding: 5px 3px;
+  min-height: 30px;
+}
+.hint,
+small {
+  font:
+    12px/1.55 Arial,
+    sans-serif;
+  color: var(--muted);
+}
+label {
+  font-size: 13px;
+}
+.heading button {
+  background: #eeeeee;
+  border: 1px solid #000000;
+  font-family: inherit;
+  min-height: 26px;
+}
+.sources .global-controls label {
+  font-size: 13px;
+}
+.global-controls span {
+  font:
+    12px "Geist Pixel Square",
+    Monaco,
+    monospace;
+}
+.folder-chip {
+  font:
+    11px/1.5 Arial,
+    sans-serif;
+}
+.folder-controls {
+  padding-left: 0;
+}
+#drop {
+  border: 1px dashed #000000;
+  background: #eeeeee;
+  box-shadow: inset 1px 1px #ffffff;
+  font-size: 12px;
+}
+#drop.drag {
+  color: #ffffff;
+  background: #000000;
+}
+.provider {
+  font-size: 12px;
+}
+.provider span,
+.check small {
+  font:
+    10px Arial,
+    sans-serif;
+  color: #4a4a4a;
+}
+.chips button {
+  font:
+    12px "Geist Pixel Square",
+    Monaco,
+    monospace;
+  padding: 4px 6px;
+  min-height: 27px;
+}
+main {
+  padding: 0 14px 16px;
+  background: var(--mat);
+}
+.toolbar {
+  min-height: 52px;
+  margin: 0 -14px 12px;
+  padding: 8px 12px;
+  background: var(--paper);
+  border-bottom: 1px solid #000000;
+  box-shadow: inset 1px 1px #ffffff;
+  gap: 8px;
+}
+.tabs {
+  gap: 5px;
+}
+.tabs button {
+  border: 1px solid #000000;
+  border-radius: 2px;
+  font:
+    13px "Geist Pixel Square",
+    Monaco,
+    monospace;
+  padding: 5px 8px;
+}
+#status {
+  font:
+    11px/1.4 "Geist Pixel Square",
+    Monaco,
+    monospace;
+  color: #4a4a4a;
+}
+#grid {
+  gap: 12px;
+}
+.card {
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow: 1px 1px 0 #888888;
+  background: #ffffff;
+}
+.card header {
+  padding: 6px 8px;
+  background: #dddddd;
+  border-bottom: 1px solid #888888;
+  box-shadow: inset 1px 1px #ffffff;
+  font:
+    12px "Geist Pixel Square",
+    Monaco,
+    monospace;
+}
+.card header button {
+  font:
+    11px "Geist Pixel Square",
+    Monaco,
+    monospace;
+  min-height: 24px;
+  padding: 3px 6px;
+}
+.card footer {
+  background: #dddddd;
+  border-top: 1px solid #888888;
+  box-shadow: inset 0 1px #ffffff;
+  color: #4a4a4a;
+  font:
+    11px/1.4 Arial,
+    sans-serif;
+  padding: 7px 8px;
+}
+.card.selected {
+  outline: 2px solid #000000;
+  outline-offset: 1px;
+}
+.card.selected header {
+  background: #000000;
+  color: #ffffff;
+  box-shadow: none;
+}
+.card text,
+#stage text {
+  fill: #000000;
+}
+.loading-label {
+  color: #4a4a4a;
+  font:
+    12px Arial,
+    sans-serif;
+  background: #ffffff;
+}
+#stage {
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow: 1px 1px #888888;
+  background: #ffffff;
+}
+#notice {
+  background: #eeeeee;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow: inset 1px 1px #ffffff;
+  font:
+    12px/1.6 Arial,
+    sans-serif;
+}
+#metadata h3 {
+  font:
+    22px/1.2 Arial,
+    sans-serif;
+}
+#metadata dl {
+  font:
+    12px/1.6 Arial,
+    sans-serif;
+}
+#metadata dt {
+  color: #4a4a4a;
+}
+.inspector select,
+.sources .header-actions button {
+  font-family: inherit;
+}
+main > footer {
+  font:
+    11px Arial,
+    sans-serif;
+  color: #4a4a4a;
+}
+dialog {
+  background: #dddddd;
+  color: #000000;
+  border: 1px solid #000000;
+  border-radius: 0;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    3px 3px 0 #000000;
+}
+dialog p {
+  font:
+    13px/1.65 Arial,
+    sans-serif;
+}
+dialog::backdrop {
+  background: #00000055;
+}
+:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+@media (max-width: 1100px) {
+  .inspector {
+    border-top: 1px solid #000000;
+  }
+}
+@media (max-width: 700px) {
+  .mobile-tools {
+    background: #dddddd;
+    border-color: #000000;
+    box-shadow: inset 0 1px #ffffff;
+  }
+  .toolbar {
+    margin-bottom: 10px;
+    background: #dddddd;
+  }
+  .sources.mobile-open,
+  .inspector.mobile-open {
+    padding: 12px;
+    background: #dddddd;
+  }
+  .sources .global-controls {
+    background: none;
+  }
+  .mobile-close {
+    font-family: inherit;
+    float: right;
+  }
+  .section > summary {
+    min-height: 38px;
+  }
+  .sidebar-header .brand {
+    width: 142px;
+    height: 71px;
+  }
+  .card header {
+    font-size: 11px;
+    padding: 5px;
+  }
+  .card footer {
+    font-size: 10px;
+  }
+  .tabs button {
+    font-size: 12px;
+  }
+  .flow-options button {
+    min-height: 34px;
+  }
+}
+.sidebar-header {
+  display: block;
+}
+.app-version {
+  display: block;
+  text-align: right;
+  margin-top: 6px;
 }

@@ -46,7 +46,7 @@ Browse, shuffle, layout, collect, and iterate work without an agent. **Copy / do
 
 ## Batch generation (compatible v1 workflow)
 
-Open **Legacy batch generator** in the app to generate **10, 50, 100, or 250** lockups from one or several names. It preserves standalone HTML previews, SVGs, 1200 × 800 PNGs, rendered boards, CSV/JSON manifests, shortlisting and ZIP downloads. The existing `wordmark-generator` CLI and skill names continue to work; `mark-this-word` is also a binary alias.
+The compatible batch tool at `/batch.html` generates **10, 50, 100, or 250** lockups from one or several names. It is no longer linked from the main workspace. It preserves standalone HTML previews, SVGs, 1200 × 800 PNGs, rendered boards, CSV/JSON manifests, shortlisting and ZIP downloads. The existing `wordmark-generator` CLI and skill names continue to work; `mark-this-word` is also a binary alias.
 
 ## Command line
 
@@ -147,3 +147,5 @@ UI chrome uses [Geist Pixel Square](https://github.com/vercel/geist-font), publi
 The palette contains only black, white and neutral grays. Active controls use black/white; informational and secondary text retain or improve their previous contrast against each surface. See [the measured contrast audit](docs/contrast-audit.md). Live type previews, bounded card rendering and deferred outlined exports remain unchanged.
 
 The public repository and package are now **logotyper**. The `logotyper` executable is primary; `wordmark-generator`, `mark-this-word`, the `$wordmark-generator` skill trigger, v2 project JSON and legacy batch commands remain compatible. Local browser saves migrate from the former project key when present.
+
+Both desktop side panels have draggable dividers and header arrows to collapse them into compact rails. Widths and collapsed states persist in browser storage. Divider arrow keys resize (Shift for larger steps), Home/End use the supported limits, and Enter or double-click toggles collapse. Mobile retains the existing drawer controls. The workspace footer copy and batch-generator link have been removed.

@@ -1237,3 +1237,185 @@ try {
     };
   }
 } catch {}
+
+// Panel sizing changes only CSS grid tracks, keeping live type and selections intact.
+{
+  const bench = document.querySelector(".workbench"),
+    minimum = 200,
+    maximum = 520,
+    rail = 36;
+  let preferences = {
+    left: 280,
+    right: 265,
+    collapsed: { left: false, right: false },
+    last: "left",
+  };
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem("logotyper-panels-v1") || "null",
+    );
+    if (saved) {
+      for (const side of ["left", "right"]) {
+        if (Number.isFinite(saved[side]))
+          preferences[side] = Math.max(minimum, Math.min(maximum, saved[side]));
+        preferences.collapsed[side] = saved.collapsed?.[side] === true;
+      }
+      if (saved.last === "right") preferences.last = "right";
+    }
+  } catch {}
+  let widths = {},
+    frame = 0;
+  const savePanels = () => {
+    try {
+      localStorage.setItem("logotyper-panels-v1", JSON.stringify(preferences));
+    } catch {}
+  };
+  function paintPanels() {
+    frame = 0;
+    const budget = Math.max(2 * minimum, bench.clientWidth - 16 - 240);
+    const sizes = {
+      left: preferences.collapsed.left ? rail : preferences.left,
+      right: preferences.collapsed.right ? rail : preferences.right,
+    };
+    let excess = sizes.left + sizes.right - budget;
+    for (const side of [
+      preferences.last === "left" ? "right" : "left",
+      preferences.last,
+    ]) {
+      const floor = preferences.collapsed[side] ? rail : minimum;
+      if (excess > 0) {
+        const delta = Math.min(excess, sizes[side] - floor);
+        sizes[side] -= delta;
+        excess -= delta;
+      }
+    }
+    widths = sizes;
+    for (const side of ["left", "right"]) {
+      bench.style.setProperty("--" + side + "-panel-width", sizes[side] + "px");
+      const pane = document.querySelector('[data-pane="' + side + '"]'),
+        button = document.querySelector('[data-toggle-pane="' + side + '"]'),
+        divider = document.querySelector('[data-resize-pane="' + side + '"]'),
+        closed = preferences.collapsed[side];
+      pane.classList.toggle("pane-collapsed", closed);
+      button.setAttribute("aria-expanded", String(!closed));
+      button.setAttribute(
+        "aria-label",
+        (closed ? "Expand" : "Collapse") + " " + side + " panel",
+      );
+      button.title = (closed ? "Expand" : "Collapse") + " " + side + " panel";
+      button.textContent =
+        side === "left" ? (closed ? "›" : "‹") : closed ? "‹" : "›";
+      divider.setAttribute("aria-valuemin", String(closed ? rail : minimum));
+      divider.setAttribute(
+        "aria-valuemax",
+        String(
+          Math.max(
+            sizes[side],
+            Math.min(
+              maximum,
+              budget -
+                (preferences.collapsed[side === "left" ? "right" : "left"]
+                  ? rail
+                  : minimum),
+            ),
+          ),
+        ),
+      );
+      divider.setAttribute("aria-valuenow", String(Math.round(sizes[side])));
+      divider.setAttribute(
+        "aria-valuetext",
+        closed ? "Collapsed" : Math.round(sizes[side]) + " pixels",
+      );
+      divider.title =
+        "Drag to resize. Double-click or Enter to collapse. Arrow keys adjust width.";
+    }
+  }
+  function schedulePanels() {
+    if (!frame) frame = requestAnimationFrame(paintPanels);
+  }
+  function togglePanel(side) {
+    preferences.collapsed[side] = !preferences.collapsed[side];
+    preferences.last = side;
+    paintPanels();
+    savePanels();
+  }
+  function resizePanel(side, value) {
+    const other = side === "left" ? "right" : "left",
+      limit = Math.min(
+        maximum,
+        bench.clientWidth -
+          16 -
+          240 -
+          (preferences.collapsed[other] ? rail : minimum),
+      );
+    preferences.collapsed[side] = false;
+    preferences.last = side;
+    preferences[side] = Math.max(
+      minimum,
+      Math.min(Math.max(minimum, limit), value),
+    );
+    schedulePanels();
+  }
+  for (const button of document.querySelectorAll("[data-toggle-pane]"))
+    button.onclick = () => togglePanel(button.dataset.togglePane);
+  for (const divider of document.querySelectorAll("[data-resize-pane]")) {
+    const side = divider.dataset.resizePane;
+    let drag;
+    divider.onpointerdown = (e) => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      drag = { x: e.clientX, width: widths[side], id: e.pointerId };
+      divider.setPointerCapture(e.pointerId);
+      document.documentElement.classList.add("is-resizing");
+    };
+    divider.onpointermove = (e) => {
+      if (!drag || (!drag.moved && Math.abs(e.clientX - drag.x) < 3)) return;
+      drag.moved = true;
+      resizePanel(
+        side,
+        drag.width + (e.clientX - drag.x) * (side === "left" ? 1 : -1),
+      );
+    };
+    const finish = () => {
+      if (!drag) return;
+      drag = null;
+      document.documentElement.classList.remove("is-resizing");
+      if (frame) cancelAnimationFrame(frame);
+      paintPanels();
+      for (const s of ["left", "right"])
+        if (!preferences.collapsed[s]) preferences[s] = widths[s];
+      savePanels();
+    };
+    divider.onpointerup = finish;
+    divider.onpointercancel = finish;
+    divider.onlostpointercapture = finish;
+    divider.ondblclick = () => togglePanel(side);
+    divider.onkeydown = (e) => {
+      if (["Enter", " "].includes(e.key)) {
+        e.preventDefault();
+        togglePanel(side);
+        return;
+      }
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+      e.preventDefault();
+      const delta =
+        (e.shiftKey ? 40 : 10) *
+        (e.key === "ArrowLeft" ? -1 : 1) *
+        (side === "left" ? 1 : -1);
+      resizePanel(
+        side,
+        e.key === "Home"
+          ? minimum
+          : e.key === "End"
+            ? maximum
+            : (preferences.collapsed[side] ? preferences[side] : widths[side]) +
+              delta,
+      );
+      if (frame) cancelAnimationFrame(frame);
+      paintPanels();
+      savePanels();
+    };
+  }
+  window.addEventListener("resize", schedulePanels);
+  paintPanels();
+}

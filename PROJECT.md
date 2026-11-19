@@ -8,4 +8,4 @@ Built on the original wordmark-generator repository. Legacy 10/50/100/250 batch 
 
 Platform: macOS, Node 22+, Swift/CoreText/CoreGraphics. No npm runtime dependencies. Browser SVG text is the immediate preview; native outline generation is deferred to export. Bounded 24-card paging and four concurrent near-viewport font loads keep preview work limited. UI uses a classic Mac grayscale workbench, left source controls, center previews and right inspector inspired by the sibling geometry tools; mobile panels focus the workspace.
 
-Repository: AlexBloom/logotyper, public. dev is development/default; main is protected and updated via PR. No production deployment or domain requested. See README.md for capabilities and limits, docs/AGENT_API.md for interoperability and STATUS.md for validation.
+Repository: AlexBloom/logotyper, public. dev is development/default; main is protected and updated via PR. Production releases promote dev to main through a PR. This is a local macOS application; no hosted website or domain is configured. See README.md for capabilities and limits, docs/AGENT_API.md for interoperability and STATUS.md for validation.

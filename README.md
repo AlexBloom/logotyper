@@ -11,7 +11,7 @@ A local typography workbench: type a name, browse it in real fonts, collect prom
 Requires **macOS, Node 22+, and Xcode Command Line Tools (Swift)**. No npm runtime dependencies or model API key required.
 
 ```sh
-git clone https://github.com/AlexBloom/logotyper.git
+git clone --branch main https://github.com/AlexBloom/logotyper.git
 cd logotyper
 npm ci
 npm run build

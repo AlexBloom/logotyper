@@ -897,13 +897,6 @@ body {
   height: 71px;
   object-fit: contain;
 }
-.app-version {
-  font:
-    11px Arial,
-    sans-serif;
-  color: var(--muted);
-  white-space: nowrap;
-}
 .section {
   background: var(--paper);
   border: 1px solid #888888;
@@ -1331,11 +1324,6 @@ dialog::backdrop {
 .sidebar-header {
   display: block;
 }
-.app-version {
-  display: block;
-  text-align: right;
-  margin-top: 6px;
-}
 /* Resizable side rails. Their content stays mounted when collapsed. */
 .panel-bar {
   position: sticky;
@@ -1483,4 +1471,12 @@ dialog::backdrop {
 }
 .sources > .panel-content > .section:last-of-type {
   margin-bottom: 6px;
+}
+
+.panel-bar .panel-version {
+  font: inherit;
+  font-size: 11px;
+  color: inherit;
+  white-space: nowrap;
+  margin-left: 4px;
 }

@@ -1,6 +1,6 @@
 # Status
 
-Updated: 2026-11-17, America/New_York.
+Updated: 2026-11-19, America/New_York.
 
 Product: **logotyper**, a live typography workbench. Public repository and package are logotyper; legacy CLI/skill aliases remain compatible. Development is on dev; main is protected. No production website is deployed.
 
@@ -21,3 +21,5 @@ Rebrand: public repository renamed to AlexBloom/logotyper; local project moved t
 Rebrand validation: both native engines build from the new canonical path; all nine tests pass after a clean dependency install. Logo, OFL and WOFF2 endpoints return 200 with the expected MIME types. Browser font readiness confirms Geist Pixel Square is loaded. Fourteen computed foreground/background pairings retain or improve previous ratios; the lowest audited new text contrast is 5.30:1. No npm runtime dependencies or model calls were added. The legacy wordmark-generator skill was refreshed with the rebranded runtime and validates successfully.
 
 Panel controls: both desktop sidebars resize through pointer-captured dividers, clamp to leave room for the center workspace, and collapse into 36px rails with header arrows. Browser storage remembers widths/collapse independently of project content. Keyboard resizing and divider collapse are supported. The main footer and its batch link/copy were removed; compatible batch/CLI endpoints remain. Browser checks cover pointer drag, keyboard adjustment and collapsed-state persistence. Existing preview on 61115 was reused without starting or stopping any listener.
+
+Production promotion (2026-11-19): main is the stable distribution branch for the local macOS application. The v2.1 release promotes the live workbench, rebrand, resizable/collapsible panels, full-width accordions and compact `logotyper v 2.1` panel title. The former version caption below the logo is removed. Local syntax checks, both native builds and all nine tests pass; the header placement is browser-verified. GitHub Checks must pass before the dev-to-main release PR is merged. No hosted web deployment workflow or public runtime is configured.

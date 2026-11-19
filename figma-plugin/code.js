@@ -4,7 +4,7 @@ figma.ui.onmessage = async message => {
   const nodes = [];
   try {
     for (const [index, file] of message.files.entries()) {
-      if (typeof file.svg !== 'string' || !file.svg.trim().startsWith('<svg')) throw new Error('Choose SVG exports from Wordmark Generator.');
+      if (typeof file.svg !== 'string' || !file.svg.trim().startsWith('<svg')) throw new Error('Choose SVG exports from Logotyper.');
       const node = figma.createNodeFromSvg(file.svg); node.name = file.name || 'Wordmark';
       node.x = (index % 3) * 960; node.y = Math.floor(index / 3) * 660; figma.currentPage.appendChild(node); nodes.push(node);
     }

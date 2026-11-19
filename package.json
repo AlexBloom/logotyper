@@ -1,6 +1,6 @@
 {
-  "name": "wordmark-generator",
-  "version": "1.0.0",
+  "name": "logotyper",
+  "version": "2.1.0",
   "description": "the v1 of your wordmark 9000x faster",
   "type": "module",
   "license": "MIT",
@@ -11,14 +11,16 @@
     "darwin"
   ],
   "bin": {
-    "wordmark-generator": "bin/wordmark.mjs"
+    "wordmark-generator": "bin/wordmark.mjs",
+    "mark-this-word": "bin/wordmark.mjs",
+    "logotyper": "bin/wordmark.mjs"
   },
   "scripts": {
     "start": "node bin/wordmark.mjs serve",
     "dev": "node bin/wordmark.mjs serve",
     "build": "node bin/wordmark.mjs build",
     "test": "node --test test/*.test.mjs",
-    "check": "node --check bin/wordmark.mjs && node --check lib/core.mjs && node --check lib/server.mjs && node --check lib/mcp.mjs && node --check web/app.js",
+    "check": "node --check bin/wordmark.mjs && node --check lib/core.mjs && node --check lib/server.mjs && node --check lib/mcp.mjs && node --check web/app.js && node --check lib/catalog.mjs && node --check lib/compose.mjs && node --check lib/font-bytes.mjs && node --check web/model.js && node --check web/batch.js",
     "mcp": "node bin/wordmark.mjs mcp",
     "install:skill": "node scripts/install-skill.mjs"
   }

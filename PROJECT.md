@@ -1,11 +1,11 @@
-# Wordmark Generator
+# logotyper
 
 Description: the v1 of your wordmark 9000x faster
 
-Purpose: turn one or multiple brand names into 10, 50, 100, or 250 real-font wordmark lockups using installed fonts or a directory of fonts. Users can browse a local drag-and-drop GUI, shortlist, export HTML/SVG/PNG/contact sheets/ZIP, and import vector artwork into Figma or Illustrator.
+A local macOS typography workbench. Browse brand text in live fonts; filter, shuffle, collect, make deterministic variations, refine words/letters, then export outlined SVG and PNG. System fonts, multiple local folders/uploads, and a labelled Google starter catalog. Adobe/paid provider panels disclose licensing and onboarding; they are not connected integrations. Agent suggestions use explicit brief/patch files, alongside CLI, HTTP and MCP.
 
-Platform: local macOS application, portable agent skill, CLI/JSON, loopback HTTP API, and stdio MCP. GitHub Actions runs on macOS and creates downloadable artifacts. Node 22+ plus Swift/CoreText/CoreGraphics; no npm runtime dependencies. The rendering engine intentionally stays macOS-specific in v1 to match native font behavior. The UI uses ordinary HTML/CSS/JavaScript because a single local tool does not need a framework or external build chain.
+Built on the original wordmark-generator repository. Legacy 10/50/100/250 batch generation, portable skill, workflow and Figma importer remain compatible. No user source fonts, accounts or credentials are bundled. Geist Pixel Square is bundled solely for UI chrome with its SIL OFL license. Font licensing remains the user's responsibility.
 
-Repository: AlexBloom/wordmark-generator, public. dev is development/default; main is protected. No production deployment or domain is requested. The macOS runner uses its own system fonts unless the workflow is given a licensed repository font directory.
+Platform: macOS, Node 22+, Swift/CoreText/CoreGraphics. No npm runtime dependencies. Browser SVG text is the immediate preview; native outline generation is deferred to export. Bounded 24-card paging and four concurrent near-viewport font loads keep preview work limited. UI uses a classic Mac grayscale workbench, left source controls, center previews and right inspector inspired by the sibling geometry tools; mobile panels focus the workspace.
 
-Implementation scope: full working v1, not just scaffolding, as explicitly requested. App, engine, exports, skill, CLI/API/MCP, Figma import plugin, documentation, tests and workflows are included. Potential later work: Windows/Linux rendering backend, modern MCP transports, font-classification presets, live design-document integrations. Those are not promised as part of v1.
+Repository: AlexBloom/logotyper, public. dev is development/default; main is protected and updated via PR. Production releases promote dev to main through a PR. This is a local macOS application; no hosted website or domain is configured. See README.md for capabilities and limits, docs/AGENT_API.md for interoperability and STATUS.md for validation.

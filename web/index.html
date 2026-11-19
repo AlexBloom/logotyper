@@ -1,12 +1,393 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="the v1 of your wordmark 9000x faster"><title>Wordmark Generator</title><link rel="stylesheet" href="/style.css"></head>
-<body>
-<header class="top"><a href="/" class="logo">W<span>↗</span>G</a><div><b>Wordmark Generator</b><small>the v1 of your wordmark 9000x faster</small></div><span class="pill">LOCAL FONT LAB · V1</span></header>
-<div class="workspace"><aside><form id="form"><div class="step">01 / THE NAME</div><h1>Start with<br>a name.</h1><label for="names">Brand name or names</label><textarea id="names" rows="3" maxlength="808" placeholder="Your brand&#10;An optional second name" required>Future Company</textarea><div class="hint">One name per line. Up to eight names.</div><label class="check"><input id="combine" type="checkbox"> Combine names in every lockup</label>
-<div class="step">02 / THE TYPE</div><label for="source">Font source</label><select id="source"><option value="system">My system fonts</option><option value="directory">A font directory on this Mac</option><option value="upload">Drop font files or a folder</option></select><div id="directory-source" hidden><label for="directory">Full folder path</label><input id="directory" placeholder="/Users/you/Fonts"><div class="hint">Subfolders are included. Files stay on your Mac.</div></div><div id="upload-source" hidden><div id="dropzone" tabindex="0" role="button" aria-label="Choose or drop font files"><b>Drop your fonts here ↙</b><span>TTF · OTF · TTC · OTC · DFONT</span></div><div class="inline"><button type="button" id="choose-files">Choose files</button><button type="button" id="choose-folder">Choose folder</button></div><input id="files" type="file" multiple accept=".ttf,.otf,.ttc,.otc,.dfont" hidden><input id="folder" type="file" webkitdirectory multiple hidden><div id="upload-info" class="hint"></div></div>
-<details><summary>Choose specific font families</summary><button type="button" id="load-fonts">Find compatible fonts</button><input id="font-search" type="search" placeholder="Search fonts" aria-label="Search fonts"><div id="font-list"></div><div class="hint" id="font-info">Leave unselected to explore all compatible families.</div></details>
-<div class="step">03 / HOW FAR?</div><label for="quantity">Number of lockups <strong id="quantity-label">50</strong></label><input id="quantity" type="range" min="0" max="3" step="1" value="1"><div class="range-labels"><span>10</span><span>50</span><span>100</span><span>250</span></div><details><summary>Exploration settings</summary><label for="seed">Shuffle seed</label><input id="seed" type="number" value="9000" min="-2147483647" max="2147483647"><div class="hint">Same names, fonts, and seed reproduce the same exploration.</div></details><button class="primary" id="generate">Generate wordmarks <span>↗</span></button><p class="license">Users are responsible for their own font licensing.</p></form></aside>
-<main><div class="heading"><div><div class="step">THE EXPLORATION</div><h2 id="results-title">A name. A hundred possibilities.</h2><p id="results-info">Real fonts. Vector outlines. A first draft worth starting from.</p></div><span id="status" role="status" aria-live="polite">Ready</span></div><div id="error" role="alert" hidden></div>
-<div id="toolbar" hidden><div class="inline"><button id="select-all">Select all</button><button id="clear">Clear</button><span id="selected-count">0 selected</span></div><div class="inline"><button id="figma">Send to Figma ↗</button><button id="illustrator">Open in Illustrator ↗</button><button id="export">Export selection</button><a id="zip" class="button dark">Download everything ↓</a></div></div>
-<div id="results" class="grid"><div class="sample s1"><span>01 / SERIF</span><b>Future<br>Company</b></div><div class="sample s2"><span>02 / GROTESK</span><b>FUTURE<br>COMPANY</b></div><div class="sample s3"><span>03 / MONO</span><b>future_company</b></div><div class="sample s4"><span>04 / ITALIC</span><b>Future Company</b></div></div><div id="bottom" hidden><a id="preview" target="_blank">Open standalone HTML preview ↗</a><div id="boards"></div></div></main></div>
-<dialog id="handoff"><button id="close-dialog" aria-label="Close" class="close">×</button><div class="step">VECTOR HANDOFF</div><h2>Your shortlist,<br>ready for Figma.</h2><p>Download the selection SVG and drag it onto a Figma canvas, or import individual SVGs with the included Figma plugin. Lettering is outlined, so the original fonts don’t need to be installed.</p><div class="inline"><a id="handoff-download" class="button dark" download>Download selection SVG ↓</a><button id="copy-svg">Copy SVG</button><a href="https://www.figma.com/files" target="_blank" rel="noreferrer" class="button">Open Figma ↗</a></div><p class="hint" id="copy-info">The plugin is in the repository’s figma-plugin folder. No Figma account access is requested.</p></dialog><script type="module" src="/app.js"></script></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>logotyper</title>
+    <link
+      rel="preload"
+      href="/fonts/GeistPixel-Square.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="workbench">
+      <aside class="sources" data-pane="left">
+        <button class="mobile-close" data-close-panel>Done</button>
+        <div class="window-title panel-bar">
+          <span>logotyper <small class="panel-version">v 2.1</small></span
+          ><button
+            type="button"
+            data-toggle-pane="left"
+            aria-label="Collapse left panel"
+            aria-controls="left-panel-content"
+            aria-expanded="true"
+          >
+            ‹
+          </button>
+        </div>
+        <div id="left-panel-content" class="panel-content">
+          <header class="sidebar-header">
+            <img src="/logotyper.svg" alt="logotyper" class="brand" />
+          </header>
+          <details class="section" open data-section="words">
+            <summary>Your words</summary>
+            <div class="section-body">
+              <label class="text-input"
+                ><span class="sr-only">Your words</span
+                ><textarea
+                  id="words"
+                  rows="4"
+                  maxlength="200"
+                  aria-label="Your words"
+                  spellcheck="false"
+                >
+logotyper</textarea
+                >
+              </label>
+              <div class="flow-options" aria-label="Text flow">
+                <button data-flow="lines">Use returns</button
+                ><button data-flow="horizontal">One line</button>
+              </div>
+              <p class="hint">
+                Enter or Shift + Enter to add a line break. One line keeps your
+                returns for later.
+              </p>
+              <label
+                >Layout<select id="layout">
+                  <option value="lines">Use text line breaks</option>
+                  <option value="horizontal">All on one line</option>
+                  <option value="stacked">Stacked</option>
+                  <option value="offset">Offset words</option>
+                  <option value="initial">Initials + name</option>
+                </select></label
+              >
+            </div>
+          </details>
+          <details class="section" open data-section="typography">
+            <summary>Typography</summary>
+            <div class="section-body">
+              <div class="global-controls">
+                <label
+                  >Letter spacing <span id="tracking-value">0</span
+                  ><input
+                    id="tracking"
+                    type="range"
+                    min="-4"
+                    max="12"
+                    step="0.1"
+                    value="0" /></label
+                ><label
+                  >Line height <span id="leading-value">1.15</span
+                  ><input
+                    id="leading"
+                    type="range"
+                    min="0.8"
+                    max="2"
+                    step="0.01"
+                    value="1.15"
+                /></label>
+              </div>
+            </div>
+          </details>
+          <details class="section" open data-section="sources">
+            <summary>Sources</summary>
+            <div class="section-body">
+              <div class="heading">
+                <button id="reload">Refresh</button>
+              </div>
+              <label class="check"
+                ><input type="checkbox" id="system" checked /> System
+                fonts</label
+              ><label class="check"
+                ><input type="checkbox" id="folders-enabled" /> Font folders /
+                files</label
+              >
+              <div class="folder-controls">
+                <div id="folder-list"></div>
+                <div class="inline">
+                  <input
+                    id="folder-path"
+                    placeholder="/path/to/fonts"
+                    aria-label="Font folder path"
+                  /><button id="add-folder">+</button>
+                </div>
+                <div id="drop" tabindex="0" role="button">
+                  Drop fonts or choose files ↙
+                </div>
+                <input
+                  type="file"
+                  id="font-files"
+                  accept=".otf,.ttf,.ttc,.otc,.dfont"
+                  multiple
+                  hidden
+                /><button id="choose-folder">Choose folder</button
+                ><input
+                  type="file"
+                  id="folder-files"
+                  webkitdirectory
+                  multiple
+                  hidden
+                />
+              </div>
+              <label class="check"
+                ><input type="checkbox" id="google" /> Google Fonts
+                <small>20-family starter</small></label
+              ><button class="provider" id="adobe">
+                Adobe Fonts <span>Setup ↗</span></button
+              ><button class="provider" id="premium">
+                Premium libraries <span>Setup ↗</span>
+              </button>
+            </div>
+          </details>
+          <details class="section" open data-section="category">
+            <summary>Category & filters</summary>
+            <div class="section-body">
+              <div id="categories" class="chips">
+                <button data-category="all" class="active">All</button
+                ><button data-category="sans">Sans</button
+                ><button data-category="serif">Serif</button
+                ><button data-category="script">Script</button
+                ><button data-category="other">Other</button>
+              </div>
+              <input
+                id="search"
+                type="search"
+                placeholder="Search family or tag"
+                aria-label="Search fonts"
+              />
+              <div id="tags" class="chips"></div>
+            </div>
+          </details>
+          <details class="section" open data-section="explore">
+            <summary>Explore</summary>
+            <div class="section-body">
+              <div class="heading">
+                <button id="reset">Reset</button>
+              </div>
+              <button id="shuffle" class="wide">Shuffle fonts ⤨</button
+              ><label>Seed<input id="seed" type="number" value="9000" /></label>
+              <p class="hint" id="inventory-status">Discovering your fonts…</p>
+            </div>
+          </details>
+          <details class="section" open data-section="project">
+            <summary>Project</summary>
+            <div class="section-body">
+              <div class="header-actions">
+                <button id="undo">Undo</button><button id="redo">Redo</button
+                ><button id="save">Save project ↓</button
+                ><button id="open">Open</button
+                ><input id="project-file" type="file" accept=".json" hidden />
+              </div>
+            </div>
+          </details>
+          <p class="hint">
+            Fonts remain local. Users are responsible for their own font
+            licensing.
+          </p>
+        </div>
+      </aside>
+      <div
+        class="panel-divider"
+        data-resize-pane="left"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize left panel"
+        tabindex="0"
+      ></div>
+      <main>
+        <div class="toolbar">
+          <div class="tabs">
+            <button data-mode="browse" class="active">Browse</button
+            ><button data-mode="collect">
+              Collection <b id="collection-count">0</b></button
+            ><button data-mode="refine">Refine</button>
+          </div>
+          <span id="status" role="status" aria-live="polite"
+            >Loading fonts…</span
+          >
+        </div>
+        <div id="notice" role="alert" hidden></div>
+        <div id="round-toolbar" hidden>
+          <select id="round" aria-label="Collection round"></select
+          ><button id="next-round">Freeze & next round</button
+          ><button id="compare-parent">Return to parent collection</button>
+        </div>
+        <div id="similarity" hidden></div>
+        <div id="grid"></div>
+        <div class="more">
+          <button id="previous">← Previous 24</button
+          ><button id="more">Next 24 →</button>
+        </div>
+        <div id="editor" hidden>
+          <svg
+            id="stage"
+            viewBox="0 0 1000 650"
+            aria-label="Live editable mark"
+          ></svg>
+          <div class="inline">
+            <button id="collect-edit">Collect this version +</button
+            ><button id="export-svg" class="primary">
+              Export outlined SVG / PNG ↗</button
+            ><span id="export-links"></span>
+          </div>
+        </div>
+      </main>
+      <div
+        class="panel-divider"
+        data-resize-pane="right"
+        role="separator"
+        aria-orientation="vertical"
+        aria-label="Resize right panel"
+        tabindex="0"
+      ></div>
+      <aside class="inspector" data-pane="right">
+        <button class="mobile-close" data-close-panel>Done</button>
+        <div class="window-title panel-bar">
+          <span>Inspector</span
+          ><button
+            type="button"
+            data-toggle-pane="right"
+            aria-label="Collapse right panel"
+            aria-controls="right-panel-content"
+            aria-expanded="true"
+          >
+            ›
+          </button>
+        </div>
+        <div id="right-panel-content" class="panel-content">
+          <details class="section" open data-section="selection">
+            <summary>Selection</summary>
+            <div class="section-body">
+              <div class="heading">
+                <button id="clear-selection">Clear</button>
+              </div>
+              <div id="metadata">
+                <p class="hint">
+                  Click a mark to inspect its type, explore related fonts, or
+                  refine it.
+                </p>
+              </div>
+              <div id="selection-controls" hidden>
+                <button id="like" class="wide">More like this ↗</button
+                ><button id="refine" class="wide primary">
+                  Refine selected mark</button
+                ><button id="vary" class="wide">10 stepped variations</button>
+                <details class="section" open data-section="appearance">
+                  <summary>Appearance</summary>
+                  <div class="section-body">
+                    <label class="check"
+                      ><input id="outline" type="checkbox" /> Outline
+                      text</label
+                    ><label
+                      >Stroke width<input
+                        id="stroke"
+                        type="range"
+                        min="0.5"
+                        max="5"
+                        step="0.1"
+                        value="1.5" /></label
+                    ><label
+                      >Offset distance<input
+                        id="offset"
+                        type="range"
+                        min="-100"
+                        max="150"
+                        value="45" /></label
+                    ><label
+                      >Rotate all words<input
+                        id="rotation"
+                        type="range"
+                        min="-45"
+                        max="45"
+                        step="1"
+                        value="0"
+                    /></label>
+                  </div>
+                </details>
+                <details class="section" open data-section="elements">
+                  <summary>Word / letter controls</summary>
+                  <div class="section-body">
+                    <label>Element<select id="element"></select></label
+                    ><label>Font<select id="element-font"></select></label>
+                    <div class="inline">
+                      <label
+                        >X offset<input
+                          id="element-x"
+                          type="number"
+                          value="0"
+                          min="-500"
+                          max="500" /></label
+                      ><label
+                        >Y offset<input
+                          id="element-y"
+                          type="number"
+                          value="0"
+                          min="-500"
+                          max="500"
+                      /></label>
+                    </div>
+                    <label
+                      >Element rotation<input
+                        id="element-rotation"
+                        type="range"
+                        min="-180"
+                        max="180"
+                        value="0" /></label
+                    ><button id="explode" class="wide">
+                      Edit selected word as letters</button
+                    ><button id="duplicate-element" class="wide">
+                      Duplicate selected element</button
+                    ><button id="remove-element" class="wide">
+                      Remove selected element</button
+                    ><label
+                      >Add a mark<input
+                        id="dingbat"
+                        placeholder="e.g. +  *  →"
+                        maxlength="8" /></label
+                    ><button id="add-dingbat" class="wide">
+                      Add typed symbol
+                    </button>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </details>
+          <details class="section" data-section="agent">
+            <summary>Agent help · optional</summary>
+            <div class="section-body">
+              <p class="hint">
+                Export a brief for your agent. Import its proposed settings to
+                preview an undoable change. No model is needed to browse or
+                iterate.
+              </p>
+              <button id="agent-brief" class="wide">
+                Copy / download agent brief</button
+              ><button id="agent-import" class="wide">
+                Import suggestion JSON</button
+              ><input type="file" id="agent-file" accept=".json" hidden />
+            </div>
+          </details>
+        </div>
+      </aside>
+    </div>
+    <dialog id="provider-dialog">
+      <h2 id="provider-title"></h2>
+      <p id="provider-text"></p>
+      <a id="provider-link" target="_blank" rel="noreferrer"
+        >Provider documentation ↗</a
+      ><button id="close-dialog">Close</button>
+    </dialog>
+    <nav class="mobile-tools" aria-label="Workspace panels">
+      <button data-panel="sources">Words & fonts</button
+      ><button data-panel="inspector">Selection & tools</button>
+    </nav>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

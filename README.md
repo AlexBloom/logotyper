@@ -1,39 +1,52 @@
-# Wordmark Generator
+# logotyper
 
 **the v1 of your wordmark 9000x faster**
 
-A local font exploration lab. Enter a brand name—or combine multiple names—and generate **10, 50, 100, or 250 wordmark lockups** from your system fonts or a directory of fonts. Browse, shortlist, and hand off vector outlines to your design tools.
+A local typography workbench: type a name, browse it in real fonts, collect promising directions, then refine and export vector outlines. The supplied logotyper SVG anchors a classic Mac interface with neutral gray panels, black controls, etched groups and compact pixel labels. User source fonts are never bundled.
 
-- Local web app with drag-and-drop font files and folders
-- Installed fonts, recursive font-directory discovery, and optional family selection
-- One name, alternative names, or multiple names stacked in every lockup
-- Standalone HTML preview, individual outlined SVGs, 1200 × 800 PNGs, rendered contact sheets, font index, and ZIP
-- Figma SVG handoff plus an optional local import plugin; open selections in Illustrator
-- CLI, JSON input/output, local HTTP API, stdio MCP, and a portable agent skill
-- Reproducible shuffle seeds and family exclusions for continuing an exploration
-- A manually triggered GitHub Actions workflow that produces downloadable exports
-
-![Wordmark Generator local app](docs/preview.png)
+![logotyper workbench](docs/live-preview.jpg)
 
 ## Run locally
 
-**Requires macOS, Node.js 22+, and Xcode Command Line Tools (Swift).** Rendering uses Apple CoreText and CoreGraphics. Windows and Linux rendering are not supported in v1. No npm dependencies, API keys, cloud accounts, or font installation are required.
+Requires **macOS, Node 22+, and Xcode Command Line Tools (Swift)**. No npm runtime dependencies or model API key required.
 
 ```sh
-git clone https://github.com/AlexBloom/wordmark-generator.git
-cd wordmark-generator
+git clone --branch main https://github.com/AlexBloom/logotyper.git
+cd logotyper
 npm ci
+npm run build
 npm start
 ```
 
-Open **http://127.0.0.1:9000**. The first generation compiles the Swift engine; later runs reuse the compiled binary. Install Apple’s tools with `xcode-select --install` if Swift is missing.
+Open **http://127.0.0.1:9000**. Use `node bin/wordmark.mjs serve --port 9010` for a different port. `npm run build` compiles both native engines; otherwise they compile on demand. Windows/Linux rendering is not supported.
 
-1. Enter one name per line. Switch on **Combine names** to use all names in every lockup; otherwise the generator alternates between names.
-2. Use your system fonts, enter a local directory path, or drop font files/a folder. Supported containers: TTF, OTF, TTC, OTC, DFONT. Old resource-only Type 1/suitcase files need conversion first.
-3. Set 10, 50, 100, or 250, then generate.
-4. Select your favorites, export a combined SVG, or download everything. Each card also has individual SVG and PNG downloads.
+## Browse → collect → refine
 
-The app binds to `127.0.0.1` and rejects foreign browser origins. Fonts and generated files stay local. The server keeps results under `.wordmark/outputs/` and uploads under `.wordmark/uploads/`. Delete those folders yourself when no longer needed. Generation jobs are tracked for the current app session; downloaded HTML previews work offline.
+1. **Browse:** enter your words in the left sidebar’s multiline text area. **Use returns** respects Enter/Shift+Enter and blank lines; **One line** flattens the preview while retaining your typed breaks. Sidebar sections collapse and remember their state. Enable system fonts, add multiple local directories, drop font files/folders, or enable the Google Fonts starter catalog. Choose sans, serif, script, other, tags, or family search. Shuffle uses a repeatable seed; Reset restores the initial exploration settings.
+2. **Collect:** save independent snapshots. Freeze a collection into a next round, return to its parent, or generate ten stepped spacing variations of a selected design. The current round responds to global settings; parent rounds stay unchanged.
+3. **Refine:** choose horizontal, stacked, offset, or initials + name layouts. Adjust tracking and line height, mix fonts per word, drag elements, rotate words/letters, outline text, split words into individual letterforms, duplicate/remove elements, and add typed symbols. Undo/redo and project JSON keep versions recoverable.
+4. **Export:** generate outlined SVG, a 2000 × 1300 PNG, and project JSON only when ready. Download SVG or use the Figma clipboard handoff; open it in local Illustrator. Export links clear after an edit so you cannot mistake an older export for the current design.
+
+Previews use live browser type, not pre-rendered images. Only 24 cards are mounted per page; fonts load near the viewport with at most four concurrent requests. Typing and sliders update immediately from loaded fonts. Character-coverage discovery runs after a short typing pause. Font classification combines OS/2 metadata and source-name hints; uncertain families stay **Other**. Similarity is a transparent category/tag/weight/width ranking, not a learned visual embedding. Discovery currently chooses one face per family.
+
+Project state autosaves in this browser; **Save project** creates a JSON backup. Reopening a project requires its font sources. Uploaded files remain under this app’s `.wordmark/uploads`; local paths in saved projects are not portable or suitable for public sharing without review. Legacy resource-only fonts need conversion first. Some legacy containers may outline successfully but lack a web-compatible preview; choose a converted OTF/TTF when needed.
+
+Mobile layouts use a compact preview grid with **Fonts & filters** and **Selection & tools** panels. This is a loopback-only local app: opening it on a phone requires a separate deliberate sharing setup. No public network listener is enabled.
+
+## Font providers
+
+- **Local:** system fonts and multiple recursive directories; TTF, OTF, TTC, OTC, DFONT discovery. No global font installation.
+- **Google Fonts:** a labelled 20-family starter catalog, downloaded on demand. Requires internet. No brand text is sent to Google. Export is enabled for compatible downloaded SFNT files; WOFF/WOFF2-only responses are preview-only. This is not the full Google catalog or a Google developer API account connection.
+- **Adobe Fonts:** the setup panel explains the licensing requirement. Standard subscription embedding is not a general customer-driven font-authoring license. No account integration is claimed. See [Adobe’s web licensing terms](https://helpx.adobe.com/fonts/web/font-licensing/font-licensing.html).
+- **Premium libraries:** [Monotype documents preview, search and similarity APIs](https://www.monotype.com/fonts-api), subject to commercial onboarding. The app exposes an information panel; a paid-library API adapter is not connected. User-licensed local files remain usable through folders.
+
+## Optional agent help
+
+Browse, shuffle, layout, collect, and iterate work without an agent. **Copy / download agent brief** gives any agent the current design and available font IDs. Import a proposed JSON settings patch, preview the change, and undo it. This is an explicit file handoff, not a hidden model call or credential connection. See [the agent API](docs/AGENT_API.md) for CLI, HTTP and MCP integration.
+
+## Batch generation (compatible v1 workflow)
+
+The compatible batch tool at `/batch.html` generates **10, 50, 100, or 250** lockups from one or several names. It is no longer linked from the main workspace. It preserves standalone HTML previews, SVGs, 1200 × 800 PNGs, rendered boards, CSV/JSON manifests, shortlisting and ZIP downloads. The existing `wordmark-generator` CLI and skill names continue to work; `mark-this-word` is also a binary alias.
 
 ## Command line
 
@@ -76,35 +89,35 @@ The same skill is available in `skills/wordmark-generator/`. Its bundled launche
 
 ## Agent interoperability
 
-Every entry point calls the same renderer and accepts the same request shape. See [the agent API](docs/AGENT_API.md) for JSON Schema, HTTP, MCP, and result contracts. See [AGENTS.md](AGENTS.md) for contributor instructions.
+Batch entry points share the original request schema; live catalog and positioned-mark exports have separate documented contracts. See [the agent API](docs/AGENT_API.md) for JSON Schema, HTTP, MCP, and result contracts. See [AGENTS.md](AGENTS.md) for contributor instructions.
 
 MCP client configuration (replace the path with your actual clone path):
 
 ```json
 {
   "mcpServers": {
-    "wordmark-generator": {
+    "logotyper": {
       "command": "node",
-      "args": ["/absolute/path/to/wordmark-generator/bin/wordmark.mjs", "mcp"]
+      "args": ["/absolute/path/to/logotyper/bin/wordmark.mjs", "mcp"]
     }
   }
 }
 ```
 
-The server exposes `generate_wordmarks` and `list_fonts` over newline-delimited stdio JSON-RPC using the MCP `2024-11-05` initialization protocol. It does not configure an agent or grant permissions automatically. CLI/JSON and the HTTP API remain usable without MCP.
+The server exposes `generate_wordmarks`, `list_fonts`, `catalog_fonts`, `compose_mark`, and `iterate_mark` over newline-delimited stdio JSON-RPC using the MCP `2024-11-05` initialization protocol. It does not configure an agent or grant permissions automatically. CLI/JSON and the HTTP API remain usable without MCP.
 
 ## Figma and Illustrator
 
-**Figma:** Select lockups and click **Send to Figma**. Download the selection SVG and drag it onto a Figma canvas. Copy SVG is also available; some design apps paste markup as text, so file import is the reliable route. This does not silently modify a remote Figma file.
+**Figma:** Export a refined mark, then click **Send to Figma**. Download the selection SVG and drag it onto a Figma canvas. Copy SVG is also available; some design apps paste markup as text, so file import is the reliable route. This does not silently modify a remote Figma file.
 
 For importing multiple individual SVGs, use the optional development plugin:
 
 1. In Figma desktop, create a new development plugin to obtain your own Figma-assigned plugin ID.
 2. Run `node scripts/configure-figma.mjs YOUR_PLUGIN_ID`.
 3. Import the generated `figma-plugin/manifest.local.json` as a development plugin.
-4. Run **Wordmark Generator** in a design file and choose exported SVGs. The plugin imports vector paths and zooms to the results. It makes no network requests.
+4. Run **Logotyper** in a design file and choose exported SVGs. The plugin imports vector paths and zooms to the results. It makes no network requests.
 
-**Illustrator:** Select lockups and click **Open in Illustrator**. The local server opens the SVG selection sheet with the installed Adobe Illustrator app. If Illustrator is missing or registered under another name, download the SVG and open it manually. Outputs are SVG files, not native `.ai` documents. Original fonts are not needed to view outlined artwork.
+**Illustrator:** Export a refined mark, then click **Open in Illustrator**. The local server opens the SVG selection sheet with the installed Adobe Illustrator app. If Illustrator is missing or registered under another name, download the SVG and open it manually. Outputs are SVG files, not native `.ai` documents. Original fonts are not needed to view outlined artwork.
 
 ## GitHub workflow
 
@@ -126,3 +139,13 @@ npm run dev     # Local web app
 ```
 
 `engine/` renders typography and boards; `lib/` contains the shared runtime, HTTP and MCP entry points; `web/` is the local GUI; `skills/` contains the portable skill; `figma-plugin/` is the optional importer. `dev` is the development branch; `main` is protected and updated through a pull request. No production hosting is configured.
+
+## Interface font and contrast
+
+UI chrome uses [Geist Pixel Square](https://github.com/vercel/geist-font), published by Vercel under SIL OFL 1.1. The unmodified 28,540-byte WOFF2 is served locally, preloaded with `font-display: swap`, and accompanied by its license and pinned source in [web/fonts](web/fonts/). This UI font is separate from the font library used for wordmarks. No font framework, animation library, or external font service is needed for the interface.
+
+The palette contains only black, white and neutral grays. Active controls use black/white; informational and secondary text retain or improve their previous contrast against each surface. See [the measured contrast audit](docs/contrast-audit.md). Live type previews, bounded card rendering and deferred outlined exports remain unchanged.
+
+The public repository and package are now **logotyper**. The `logotyper` executable is primary; `wordmark-generator`, `mark-this-word`, the `$wordmark-generator` skill trigger, v2 project JSON and legacy batch commands remain compatible. Local browser saves migrate from the former project key when present.
+
+Both desktop side panels have draggable dividers and header arrows to collapse them into compact rails. Widths and collapsed states persist in browser storage. Divider arrow keys resize (Shift for larger steps), Home/End use the supported limits, and Enter or double-click toggles collapse. Mobile retains the existing drawer controls. The workspace footer copy and batch-generator link have been removed.
